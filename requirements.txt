@@ -1,0 +1,9 @@
+# Call with:
+# $ pip install -r ./requirements.txt
+
+fiona
+matplotlib
+numpy
+pre-commit
+rasterio
+requests-oauthlib

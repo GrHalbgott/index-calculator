@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Calculate indices"""
 
-# Authors:  Philipp Valentin Friedrich & Nikolaos Kolaxidis
+
 # Call with:
 # $ python src/main.py [raster_input_file] [shape_input_file] [index_name {ndmi, ndvi, reip, rgb}]
 
@@ -22,27 +22,25 @@ def main():
     starttime = time.time()
 
     in_raster = "./data/" + sys.argv[1]
-    in_shape = "./data/shapes/" + sys.argv[2]
+    if len(sys.argv) < 4:
+        index_name = sys.argv[2]
+    else:
+        in_shape = "./data/shapes/" + sys.argv[2]
+        index_name = sys.argv[3]
 
-    index_name = sys.argv[3]
-
-    print("Cutting raster...")
-    try:
-        cut_raster = utils.cut(in_raster, in_shape)
-    except Exception as err:
-        print("...error occured when cutting the raster file: {}".format(str(err)))
-        sys.exit()
+    if len(sys.argv) == 4:
+        print("Cutting raster...")
+        try:
+            cut_raster = utils.cut(in_raster, in_shape)
+        except Exception as err:
+            print("...error occured when cutting the raster file: {}".format(str(err)))
+            sys.exit()
+    else:
+        cut_raster = in_raster
 
     print("Calculating {}...".format(index_name))
     try:
-        if index_name in {"NDMI", "ndmi", 1}:
-            result = utils.ndmi_calc(cut_raster)
-        elif index_name in {"NDVI", "ndvi", 2}:
-            result = utils.ndvi_calc(cut_raster)
-        elif index_name in {"REIP", "reip", 3}:
-            result = utils.reip_calc(cut_raster)
-        elif index_name in {"RGB", "rgb", 4}:
-            result = utils.rgb_calc(cut_raster)
+        result = utils.calc_index(index_name, cut_raster)
     except Exception as err:
         print(
             "...error occured when calculating the {}: {}".format(index_name, str(err))
@@ -53,7 +51,7 @@ def main():
 
     # Print out the information to user
     print(
-        "Finished computing the {}-index of the raster {}. \n The script took {:.2f} seconds to run.".format(
+        "Finished calculating the {} of the raster {}. \n The script took {:.2f} seconds to run.".format(
             index_name, in_raster, stoptime - starttime
         )
     )

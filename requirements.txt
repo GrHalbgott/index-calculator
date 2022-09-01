@@ -4,6 +4,4 @@
 fiona
 matplotlib
 numpy
-pre-commit
 rasterio
-requests-oauthlib

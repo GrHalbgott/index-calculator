@@ -14,14 +14,19 @@ import numpy as np
 
 def calc_index(index_name, raster_path):
     """Calculates the desired index and returns a ndarray (raster)"""
-    if index_name in {"NDMI", "ndmi", 1}:
+    if index_name in {"NDMI", "ndmi"}:
         result = ndmi_calc(raster_path)
-    elif index_name in {"NDVI", "ndvi", 2}:
+    elif index_name in {"NDVI", "ndvi"}:
         result = ndvi_calc(raster_path)
-    elif index_name in {"REIP", "reip", 3}:
+    elif index_name in {"REIP", "reip"}:
         result = reip_calc(raster_path)
-    elif index_name in {"RGB", "rgb", 4}:
+    elif index_name in {"RGB", "rgb"}:
         result = rgb_calc(raster_path)
+    else:
+        print(
+            "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, choose from {ndmi, ndvi, reip, rgb}."
+        )
+        sys.exit()
     return result
 
 
@@ -35,7 +40,7 @@ def ndmi_calc(raster_path):
     b11 = read_raster(b11_path)
     np.seterr(divide="ignore", invalid="ignore")
     ndmi = (b8a - b11) / (b8a + b11)
-    np.savetxt("ndmi.txt", ndmi)
+    np.savetxt("./data/ndmi.txt", ndmi)
     print(str(np.nanmax(ndmi)) + " max | min " + str(np.nanmin(ndmi)))
     return ndmi
 
@@ -52,7 +57,7 @@ def ndvi_calc(raster_path):
     b8 = read_raster(b8_path)
     np.seterr(divide="ignore", invalid="ignore")
     ndvi = (b8 - b4) / (b8 + b4)
-    np.savetxt("ndvi.txt", ndvi)
+    np.savetxt("./data/ndvi.txt", ndvi)
     print(str(np.nanmax(ndvi)) + " max | min " + str(np.nanmin(ndvi)))
     return ndvi
 
@@ -73,7 +78,7 @@ def reip_calc(raster_path):
     b7 = read_raster(b7_path)
     np.seterr(divide="ignore", invalid="ignore")
     reip = 700 + 40 * ((b4 + b7) / 2 - b5) / (b6 - b5)
-    np.savetxt("reip.txt", reip)
+    np.savetxt("./data/reip.txt", reip)
     print(str(np.nanmax(reip)) + " max | min " + str(np.nanmin(reip)))
     return reip
 
@@ -91,7 +96,7 @@ def rgb_calc(raster_path):
     b4 = read_raster(b4_path)
     np.seterr(divide="ignore", invalid="ignore")
     rgb = b2 + b3 + b4
-    np.savetxt("rgb.txt", rgb)
+    np.savetxt("./data/rgb.txt", rgb)
     print(str(np.nanmax(rgb)) + " max | min " + str(np.nanmin(rgb)))
     return rgb
 
@@ -125,7 +130,7 @@ def read_raster(in_raster):
 
 def cut(in_raster, in_shape):
     """Cut raster file with shape file and generate new raster output file as TIF"""
-    out_raster = in_raster[:-4] + "_cut.tif"
+    out_raster = "./data" + in_raster[13:-4] + "_cut.tif"
     try:
         with fiona.open(in_shape, "r") as shapefile:
             shapes = [feature["geometry"] for feature in shapefile]

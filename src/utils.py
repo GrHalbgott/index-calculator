@@ -20,44 +20,44 @@ def _check_input_arguments():
     optional_args = parser.add_argument_group("optional arguments")
     required_args.add_argument(
         "-i",
-        metavar="Index name, string",
+        metavar="Index name",
         dest="index_name",
-        help="Choose which index gets calculated. Check the README for a list of possible indices.",
+        help="String | Choose which index gets calculated. Check the README for a list of possible indices.",
         required=True,
     )
     optional_args.add_argument(
         "-c",
-        metavar="Clip, string",
+        metavar="Clip",
         dest="clip_shape",
-        help="Clip raster to shapefile with shapefile. Use the name and file-type only (like roi.shp). Default value: None",
+        help="String | Clip raster to shapefile with shapefile. Use the name and file-type only (like roi.shp). Default value: None",
         default="",
     )
     optional_args.add_argument(
         "-r",
-        metavar="Resolution, integer",
+        metavar="Resolution",
         dest="resolution",
-        help="The indices can be calculated with different resolutions (10, 20, 60 (meters)). Default value: highest resolution possible",
+        help="Integer | The indices can be calculated with different resolutions (10, 20, 60 (meters)). Default value: highest resolution possible",
         default="",
     )
     optional_args.add_argument(
         "-o",
-        metavar="Optional value, integer",
+        metavar="Optional value",
         dest="optional_val",
-        help="Some indices need additional values like the L-value in SAVI. Default value: as in literature",
+        help="Integer | Some indices need additional values like the L-value in SAVI. Default value: as in literature",
         default="",
     )
     optional_args.add_argument(
         "-s",
-        metavar="Save plot, bool",
+        metavar="Save plot",
         dest="want_plot_saved",
-        help="Do you want to automatically save the plot locally to ./data/? Use true/false. Default: false",
+        help="Boolean | Do you want to automatically save the plot locally to ./data/? Use true/false. Default: false",
         default="false",
     )
     # show help dialog if no arguments are given
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         print(
-            "Exiting program, call again to run. Use -h or --help to show the help dialog."
+            " \nExiting program, call again to run. Use -h or --help to show the help dialog."
         )
         sys.exit(1)
     else:

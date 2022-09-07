@@ -36,16 +36,28 @@ The region of interest must be manually added as a shapefile into `./data/shapes
 
 ## Usage
 
-Open terminal and navigate to cloned/downloaded folder "index-calculator". Call the program with:
+Open the terminal and navigate to the cloned/downloaded folder `index-calculator`. If you don't have the required packages installed already, call this first:
+```
+$ pip install -r ./requirements.txt
+```
+If ready, call the program without any arguments to access the help within the terminal with information on how to use the arguments:
+```
+$ python src/main.py
+
+usage: main.py [-h] -i Index name, string [-c Clip, string] [-r Resolution, integer] [-o Optional value, integer] [-s Save plot, bool]
+
+Calculate an index with Sentinel-2 satellite imagery. You can use the following options to adapt the calculation to your needs. Have fun!
+
+required arguments:
+  -i Index name      String  | Choose which index gets calculated. Check the README for a list of possible indices.
+
+optional arguments:
+  -c Clip            String  | Clip raster to shapefile with shapefile. Use the name and file-type only (like roi.shp). Default value: None
+  -r Resolution      Integer | The indices can be calculated with different resolutions (10, 20, 60 (meters)). Default value: highest resolution possible
+  -o Optional value  Integer | Some indices need additional values like the L-value in SAVI. Default value: as in literature
+  -s Save plot       Boolean | Do you want to automatically save the plot locally to ./data/? Use true/false. Default: false
+
+Exiting program, call again to run. Use -h or --help to show the help dialog.
 
 ```
-$ pip install -r ./requirements.txt -> use if you don't have the required packages installed in your environment yet
-
-$ python src/main.py [shape_input_file_name] [index_name {ndvi, ndmi, ndwi, reip}]
-```
-Example:
-```
-$ python src/main.py roi.shp ndvi
-```
-
 If you have any questions, wishes or ideas, feel free to ask me in the <a href="https://github.com/GrHalbgott/index-calculator/issues">issues section</a>, I'm looking forward to it. Have fun!

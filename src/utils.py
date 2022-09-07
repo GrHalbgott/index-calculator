@@ -1,143 +1,162 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Functions to calculate indices"""
+"""Utilities (check inputs, choose index function, plot)"""
 
+
+import indices
 import sys
-import glob
-import fiona
-import rasterio
-import rasterio.mask
-import rasterio.features
-import rasterio.warp
-import numpy as np
+import argparse
+import matplotlib.pyplot as plt
 
 
-def calc_index(index_name, raster_path):
+def _check_input_arguments():
+    """Some error-handling and interaction for the optional input values: clip raster to shapefile, index name, resolution, optional value (e.g. L in SAVI) and whether user wants to save the plot locally"""
+    # Initialize argparse and specify the optional arguments
+    help_msg = "Calculate an index with Sentinel-2 satellite imagery. You can use the following options to adapt the calculation to your needs. Have fun!"
+    parser = argparse.ArgumentParser(description=help_msg, prefix_chars="-")
+    parser._action_groups.pop()
+    # use two groups of inputs (required and optional)
+    required_args = parser.add_argument_group("required arguments")
+    optional_args = parser.add_argument_group("optional arguments")
+    required_args.add_argument(
+        "-i",
+        metavar="Index name, string",
+        dest="index_name",
+        help="Choose which index gets calculated. Check the README for a list of possible indices.",
+        required=True,
+    )
+    optional_args.add_argument(
+        "-c",
+        metavar="Clip, string",
+        dest="clip_shape",
+        help="Clip raster to shapefile with shapefile. Use the name and file-type only (like roi.shp). Default value: None",
+        default="",
+    )
+    optional_args.add_argument(
+        "-r",
+        metavar="Resolution, integer",
+        dest="resolution",
+        help="The indices can be calculated with different resolutions (10, 20, 60 (meters)). Default value: highest resolution possible",
+        default="",
+    )
+    optional_args.add_argument(
+        "-o",
+        metavar="Optional value, integer",
+        dest="optional_val",
+        help="Some indices need additional values like the L-value in SAVI. Default value: as in literature",
+        default="",
+    )
+    optional_args.add_argument(
+        "-s",
+        metavar="Save plot, bool",
+        dest="want_plot_saved",
+        help="Do you want to automatically save the plot locally to ./data/? Use true/false. Default: false",
+        default="false",
+    )
+    # show help dialog if no arguments are given
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        print(
+            "Exiting program, call again to run. Use -h or --help to show the help dialog."
+        )
+        sys.exit(1)
+    else:
+        # initialize arguments of parser
+        args = parser.parse_args()
+    # Assign arguments to variables and do some checks for error-handling
+    index_name = args.index_name.lower()
+    clip_shape = args.clip_shape
+    resolution = args.resolution
+    optional_val = args.optional_val
+    want_plot_saved = args.want_plot_saved.lower()
+
+    while index_name not in ["ndvi", "ndmi", "ndwi", "reip"]:
+        print(
+            "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
+        )
+        index_name = input("Enter the name of the index to be calculated: ")
+        index_name = index_name.lower()
+
+    if clip_shape != "":
+        while clip_shape[-4] != "." and clip_shape[-3] != ".":
+            clip_shape = input(
+                "Cannot read shapefile, please input a valid shapefile (like roi.shp): "
+            )
+
+    while resolution not in ["10", "20", "60", ""]:
+        print(
+            "Your specified resolution cannot be used. Please provide a valid request (10, 20, 60)."
+        )
+        resolution = input("Enter the desired spatial resolution: ")
+
+    if optional_val != "":
+        optional_val = int(args.optional_val)
+
+    return (
+        index_name,
+        clip_shape,
+        resolution,
+        optional_val,
+        want_plot_saved,
+    )
+
+
+def index_calculator(index_name, resolution, raster_path, clip_shape, optional_val):
     """Calculates the desired index and returns a ndarray (raster)"""
     if index_name == "ndvi":
-        result = ndvi_calc(raster_path)
+        result, calc_resolution = indices.ndvi_calc(resolution, raster_path, clip_shape)
     elif index_name == "ndmi":
-        result = ndmi_calc(raster_path)
+        result, calc_resolution = indices.ndmi_calc(resolution, raster_path, clip_shape)
     elif index_name == "ndwi":
-        result = ndwi_calc(raster_path)
+        result, calc_resolution = indices.ndwi_calc(resolution, raster_path, clip_shape)
     elif index_name == "reip":
-        result = reip_calc(raster_path)
+        result, calc_resolution = indices.reip_calc(resolution, raster_path, clip_shape)
+    return result, calc_resolution
+
+
+def index_plot(index_name, result):
+    """Choose parameters for the plot depending on the calculated index"""
+    if index_name == "ndvi":
+        plt.imshow(result, cmap="RdYlGn")
+        plt.clim(-0.2, 0.6)
+    elif index_name == "ndmi":
+        plt.imshow(result, cmap="jet_r")
+        plt.clim(-0.2, 0.4)
+    elif index_name == "ndwi":
+        plt.imshow(result, cmap="seismic_r")
+        plt.clim(-0.8, 0.8)
     else:
-        print(
-            "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, choose from {ndvi, ndmi, ndwi, reip}."
+        plt.imshow(result)  # viridis is the default cmap
+
+
+def plot_result(index_name, result, calc_resolution, want_plot_saved):
+    """Depending on the index, this plots the calculated results differently"""
+    plt.figure()
+    plt.title(
+        "Calculated {} for region of interest with spatial resolution of {}m".format(
+            index_name.upper(), calc_resolution
         )
-        sys.exit()
-    return result
-
-
-def ndvi_calc(raster_path):
-    """Calculation of the NDVI (Normalized Difference Vegetation Index)"""
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R10m/*_B04*.jp2"):
-        b4_path = item
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R10m/*_B08*.jp2"):
-        b8_path = item
-    b4 = read_raster(b4_path)
-    b8 = read_raster(b8_path)
-    np.seterr(divide="ignore", invalid="ignore")
-    ndvi = (b8 - b4) / (b8 + b4)
-    np.savetxt("./data/ndvi.txt", ndvi)
-    return ndvi
-
-
-def ndmi_calc(raster_path):
-    """Calculation of the NDMI (Normalized Difference Moisture Index)"""
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R20m/*_B8A*.jp2"):
-        b8a_path = item
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R20m/*_B11*.jp2"):
-        b11_path = item
-    b8a = read_raster(b8a_path)
-    b11 = read_raster(b11_path)
-    np.seterr(divide="ignore", invalid="ignore")
-    ndmi = (b8a - b11) / (b8a + b11)
-    np.savetxt("./data/ndmi.txt", ndmi)
-    return ndmi
-
-
-def ndwi_calc(raster_path):
-    """Calculation of the NDWI (Normalized Difference Water Index)"""
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R10m/*_B03*.jp2"):
-        b3_path = item
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R10m/*_B08*.jp2"):
-        b8_path = item
-    b3 = read_raster(b3_path)
-    b8 = read_raster(b8_path)
-    np.seterr(divide="ignore", invalid="ignore")
-    ndwi = (b3 - b8) / (b3 + b8)
-    np.savetxt("./data/ndwi.txt", ndwi)
-    return ndwi
-
-
-def reip_calc(raster_path):
-    """Calculation of the REIP (Red-Edge Inflection Point)"""
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R20m/*_B04*.jp2"):
-        b4_path = item
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R20m/*_B05*.jp2"):
-        b5_path = item
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R20m/*_B06*.jp2"):
-        b6_path = item
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R20m/*_B07*.jp2"):
-        b7_path = item
-    b4 = read_raster(b4_path)
-    b5 = read_raster(b5_path)
-    b6 = read_raster(b6_path)
-    b7 = read_raster(b7_path)
-    np.seterr(divide="ignore", invalid="ignore")
-    reip = 705 + 40 * ((b4 + b7) / 2 - b5) / (b6 - b5)
-    np.savetxt("./data/reip.txt", reip)
-    return reip
-
-
-def read_raster(in_raster):
-    """
-    Read the input files as Numpy arrays and preprocess them
-    param in_dem: path to input file (string)
-    output: returns a Numpy array (Null values are np.nan)
-    """
-    if len(sys.argv) == 3:
-        print("...cutting raster {}...".format(in_raster))
-        in_shape = "./data/shapes/" + sys.argv[1]
-        raster = cut(in_raster, in_shape)
+    )
+    plt.xlabel("X-Axis")
+    plt.ylabel("Y-Axis")
+    # use different cmaps and limits depending on the calculated index
+    index_plot(index_name, result)
+    # plot a colorbar with the same height as the plot
+    im_ratio = result.shape[0] / result.shape[1]
+    plt.colorbar(fraction=0.04625 * im_ratio)
+    # checks if the user wants to locally save the figure as well
+    while want_plot_saved not in ["true", "false"]:
+        want_plot_saved = input("Do you want to save the plot as figure? Use y/n: ")
+        if want_plot_saved in ["y", "yes", "yup", "ye"] or want_plot_saved in [
+            "n",
+            "no",
+            "nope",
+        ]:
+            break
+        print("Please provide a valid input.")
+    if want_plot_saved in ["y", "yes", "yup", "ye", "true"]:
+        plt.savefig("./{}_{}.png".format(index_name.lower(), calc_resolution))
     else:
-        raster = in_raster
-    try:
-        print("...reading raster {}...".format(raster))
-        dataset = rasterio.open(raster, "r")
-    except Exception as err:
-        print("...unable to open file: ", str(err), "\nPlease check your input file.")
-        sys.exit()
-    # specify the band which shall be read
-    band = dataset.read(1).astype("float64")
-    dataset.close()
-    print("...reading worked.")
-    return band
-
-
-def cut(in_raster, in_shape):
-    """Cut raster file with shape file and generate new raster output file as TIF"""
-    out_raster = "./data" + in_raster[-35:-4] + "_cut.tif"
-    try:
-        with fiona.open(in_shape, "r") as shapefile:
-            shapes = [feature["geometry"] for feature in shapefile]
-        with rasterio.open(in_raster) as src:
-            out_image, out_transform = rasterio.mask.mask(src, shapes, crop=True)
-            out_meta = src.meta
-        out_meta.update(
-            {
-                "driver": "GTiff",
-                "height": out_image.shape[1],
-                "width": out_image.shape[2],
-                "transform": out_transform,
-            }
-        )
-        with rasterio.open(out_raster, "w", **out_meta) as dest:
-            dest.write(out_image)
-    except Exception as err:
-        print("...unable to cut raster: ", str(err), "\nPlease check your input files.")
-        sys.exit()
-    print("...cutting worked.")
-    return out_raster
+        pass
+    plt.tight_layout()
+    plt.show()

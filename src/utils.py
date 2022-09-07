@@ -108,22 +108,25 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
         )
     elif index_name == "reip":
         result, calc_resolution = indices.reip_calc(resolution, raster_path, clip_shape)
+    elif index_name == "vari":
+        result, calc_resolution = indices.vari_calc(resolution, raster_path, clip_shape)
     else:
         print(
             "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
         )
+        sys.exit()
     return result, calc_resolution
 
 
 def index_plot(index_name, result):
     """Choose parameters for the plot depending on the calculated index"""
-    if index_name in ["ndvi", "savi"]:
+    if index_name in ["ndvi", "savi", "vari"]:
         plt.imshow(result, cmap="RdYlGn")
-        plt.clim(-0.2, 0.6)
+        plt.clim(-0.15, 0.45)
     elif index_name == "ndmi":
         plt.imshow(result, cmap="jet_r")
         plt.clim(-0.2, 0.4)
-    elif index_name == "ndwi":
+    elif index_name in ["ndwi"]:
         plt.imshow(result, cmap="seismic_r")
         plt.clim(-0.8, 0.8)
     else:

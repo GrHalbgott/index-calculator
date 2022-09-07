@@ -14,7 +14,7 @@ import numpy as np
 
 
 def ndvi_calc(resolution, raster_path, clip_shape):
-    """Calculation of the NDVI (Normalized Difference Vegetation Index)"""
+    """Calculation of the NDVI"""
     if resolution == "" or resolution == "10":
         resolution = "10"
         for item in glob.glob(
@@ -39,7 +39,7 @@ def ndvi_calc(resolution, raster_path, clip_shape):
 
 
 def ndmi_calc(resolution, raster_path, clip_shape):
-    """Calculation of the NDMI (Normalized Difference Moisture Index)"""
+    """Calculation of the NDMI"""
     if resolution == "":
         resolution = "20"
     elif resolution == "10":
@@ -62,7 +62,7 @@ def ndmi_calc(resolution, raster_path, clip_shape):
 
 
 def ndwi_calc(resolution, raster_path, clip_shape):
-    """Calculation of the NDWI (Normalized Difference Water Index)"""
+    """Calculation of the NDWI"""
     if resolution == "" or resolution == "10":
         resolution = "10"
         for item in glob.glob(
@@ -87,7 +87,7 @@ def ndwi_calc(resolution, raster_path, clip_shape):
 
 
 def savi_calc(resolution, raster_path, clip_shape, optional_val):
-    """Calculation of the NDWI (Normalized Difference Water Index)"""
+    """Calculation of the SAVI"""
     if optional_val == "":
         optional_val = 0.5
     if resolution == "" or resolution == "10":
@@ -114,7 +114,7 @@ def savi_calc(resolution, raster_path, clip_shape, optional_val):
 
 
 def reip_calc(resolution, raster_path, clip_shape):
-    """Calculation of the REIP (Red-Edge Inflection Point)"""
+    """Calculation of the REIP"""
     if resolution == "":
         resolution = "20"
     elif resolution == "10":
@@ -144,3 +144,28 @@ def reip_calc(resolution, raster_path, clip_shape):
     reip = 700 + 40 * ((b4 + b7) / 2 - b5) / (b6 - b5)
     np.savetxt("./data/reip.txt", reip)
     return reip, resolution
+
+
+def vari_calc(resolution, raster_path, clip_shape):
+    """Calculation of the VARI"""
+    if resolution == "":
+        resolution = "10"
+    for item in glob.glob(
+        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B02*.jp2"
+    ):
+        b2_path = item
+    for item in glob.glob(
+        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"
+    ):
+        b3_path = item
+    for item in glob.glob(
+        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"
+    ):
+        b4_path = item
+    b2 = reading.read_raster(b2_path, clip_shape)
+    b3 = reading.read_raster(b3_path, clip_shape)
+    b4 = reading.read_raster(b4_path, clip_shape)
+    np.seterr(divide="ignore", invalid="ignore")
+    vari = (b3 - b4) / (b3 + b4 - b2)
+    np.savetxt("./data/vari .txt", vari)
+    return vari, resolution

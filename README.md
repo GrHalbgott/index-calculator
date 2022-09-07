@@ -7,6 +7,7 @@ Following indices are available so far (write an <a href="https://github.com/GrH
 - Normalized Difference Water Index (NDWI)
 - Soil-Adjusted Vegetation Index (SAVI)
 - Red-Edge Inflection Point (REIP)
+- Visible Atmospherically Resistant Index (VARI)
 
 ## Data
 

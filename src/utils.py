@@ -70,13 +70,6 @@ def _check_input_arguments():
     optional_val = args.optional_val
     want_plot_saved = args.want_plot_saved.lower()
 
-    while index_name not in ["ndvi", "ndmi", "ndwi", "reip"]:
-        print(
-            "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
-        )
-        index_name = input("Enter the name of the index to be calculated: ")
-        index_name = index_name.lower()
-
     if clip_shape != "":
         while clip_shape[-4] != "." and clip_shape[-3] != ".":
             clip_shape = input(
@@ -109,14 +102,22 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
         result, calc_resolution = indices.ndmi_calc(resolution, raster_path, clip_shape)
     elif index_name == "ndwi":
         result, calc_resolution = indices.ndwi_calc(resolution, raster_path, clip_shape)
+    elif index_name == "savi":
+        result, calc_resolution = indices.savi_calc(
+            resolution, raster_path, clip_shape, optional_val
+        )
     elif index_name == "reip":
         result, calc_resolution = indices.reip_calc(resolution, raster_path, clip_shape)
+    else:
+        print(
+            "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
+        )
     return result, calc_resolution
 
 
 def index_plot(index_name, result):
     """Choose parameters for the plot depending on the calculated index"""
-    if index_name == "ndvi":
+    if index_name in ["ndvi", "savi"]:
         plt.imshow(result, cmap="RdYlGn")
         plt.clim(-0.2, 0.6)
     elif index_name == "ndmi":

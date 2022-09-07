@@ -5,6 +5,7 @@ Following indices are available so far (write an <a href="https://github.com/GrH
 - Normalized Difference Vegetation Index (NDVI)
 - Normalized Difference Moisture Index (NDMI)
 - Normalized Difference Water Index (NDWI)
+- Soil-Adjusted Vegetation Index (SAVI)
 - Red-Edge Inflection Point (REIP)
 
 ## Data

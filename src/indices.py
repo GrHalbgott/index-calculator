@@ -86,6 +86,33 @@ def ndwi_calc(resolution, raster_path, clip_shape):
     return ndwi, resolution
 
 
+def savi_calc(resolution, raster_path, clip_shape, optional_val):
+    """Calculation of the NDWI (Normalized Difference Water Index)"""
+    if optional_val == "":
+        optional_val = 0.5
+    if resolution == "" or resolution == "10":
+        resolution = "10"
+        for item in glob.glob(
+            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"
+        ):
+            b8_path = item
+    elif resolution != "10":
+        for item in glob.glob(
+            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
+        ):
+            b8_path = item
+    for item in glob.glob(
+        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"
+    ):
+        b4_path = item
+    b4 = reading.read_raster(b4_path, clip_shape)
+    b8 = reading.read_raster(b8_path, clip_shape)
+    np.seterr(divide="ignore", invalid="ignore")
+    savi = ((b8 - b4) / (b8 + b4 + optional_val)) * (1 + optional_val)
+    np.savetxt("./data/savi.txt", savi)
+    return savi, resolution
+
+
 def reip_calc(resolution, raster_path, clip_shape):
     """Calculation of the REIP (Red-Edge Inflection Point)"""
     if resolution == "":
@@ -114,6 +141,6 @@ def reip_calc(resolution, raster_path, clip_shape):
     b6 = reading.read_raster(b6_path, clip_shape)
     b7 = reading.read_raster(b7_path, clip_shape)
     np.seterr(divide="ignore", invalid="ignore")
-    reip = 705 + 40 * ((b4 + b7) / 2 - b5) / (b6 - b5)
+    reip = 700 + 40 * ((b4 + b7) / 2 - b5) / (b6 - b5)
     np.savetxt("./data/reip.txt", reip)
     return reip, resolution

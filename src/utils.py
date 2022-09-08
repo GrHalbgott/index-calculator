@@ -98,14 +98,16 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
     """Calculates the desired index and returns a ndarray (raster)"""
     if index_name == "ndvi":
         result, calc_resolution = indices.ndvi_calc(resolution, raster_path, clip_shape)
-    elif index_name == "ndmi":
-        result, calc_resolution = indices.ndmi_calc(resolution, raster_path, clip_shape)
-    elif index_name == "ndwi":
-        result, calc_resolution = indices.ndwi_calc(resolution, raster_path, clip_shape)
     elif index_name == "savi":
         result, calc_resolution = indices.savi_calc(
             resolution, raster_path, clip_shape, optional_val
         )
+    elif index_name == "ndmi":
+        result, calc_resolution = indices.ndmi_calc(resolution, raster_path, clip_shape)
+    elif index_name == "ndwi":
+        result, calc_resolution = indices.ndwi_calc(resolution, raster_path, clip_shape)
+    elif index_name == "ndsi":
+        result, calc_resolution = indices.ndsi_calc(resolution, raster_path, clip_shape)
     elif index_name == "reip":
         result, calc_resolution = indices.reip_calc(resolution, raster_path, clip_shape)
     elif index_name == "vari":
@@ -123,12 +125,15 @@ def index_plot(index_name, result):
     if index_name in ["ndvi", "savi", "vari"]:
         plt.imshow(result, cmap="RdYlGn")
         plt.clim(-0.15, 0.45)
-    elif index_name == "ndmi":
+    elif index_name in ["ndmi"]:
         plt.imshow(result, cmap="jet_r")
         plt.clim(-0.2, 0.4)
     elif index_name in ["ndwi"]:
         plt.imshow(result, cmap="seismic_r")
         plt.clim(-0.8, 0.8)
+    elif index_name in ["ndsi"]:
+        plt.imshow(result, cmap="Blues")
+        plt.clim(0.2, 0.42)
     else:
         plt.imshow(result)  # viridis is the default cmap
 

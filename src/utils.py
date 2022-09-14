@@ -96,20 +96,22 @@ def _check_input_arguments():
 
 def index_calculator(index_name, resolution, raster_path, clip_shape, optional_val):
     """Calculates the desired index and returns a ndarray (raster)"""
-    if index_name == "ndvi":
+    if index_name == "ndbi":
+        result, calc_resolution = indices.ndbi_calc(resolution, raster_path, clip_shape)
+    elif index_name == "ndmi":
+        result, calc_resolution = indices.ndmi_calc(resolution, raster_path, clip_shape)
+    elif index_name == "ndsi":
+        result, calc_resolution = indices.ndsi_calc(resolution, raster_path, clip_shape)
+    elif index_name == "ndvi":
         result, calc_resolution = indices.ndvi_calc(resolution, raster_path, clip_shape)
+    elif index_name == "ndwi":
+        result, calc_resolution = indices.ndwi_calc(resolution, raster_path, clip_shape)
+    elif index_name == "reip":
+        result, calc_resolution = indices.reip_calc(resolution, raster_path, clip_shape)
     elif index_name == "savi":
         result, calc_resolution = indices.savi_calc(
             resolution, raster_path, clip_shape, optional_val
         )
-    elif index_name == "ndmi":
-        result, calc_resolution = indices.ndmi_calc(resolution, raster_path, clip_shape)
-    elif index_name == "ndwi":
-        result, calc_resolution = indices.ndwi_calc(resolution, raster_path, clip_shape)
-    elif index_name == "ndsi":
-        result, calc_resolution = indices.ndsi_calc(resolution, raster_path, clip_shape)
-    elif index_name == "reip":
-        result, calc_resolution = indices.reip_calc(resolution, raster_path, clip_shape)
     elif index_name == "vari":
         result, calc_resolution = indices.vari_calc(resolution, raster_path, clip_shape)
     else:
@@ -122,15 +124,18 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
 
 def index_plot(index_name, result):
     """Choose parameters for the plot depending on the calculated index"""
-    if index_name in ["ndvi", "savi", "vari"]:
-        plt.imshow(result, cmap="RdYlGn")
-        plt.clim(-0.15, 0.45)
+    if index_name in ["ndbi"]:
+        plt.imshow(result, cmap="BrBG")
+        plt.clim(-0.1, 0.1)
     elif index_name in ["ndmi"]:
         plt.imshow(result, cmap="jet_r")
         plt.clim(-0.2, 0.4)
     elif index_name in ["ndwi"]:
         plt.imshow(result, cmap="seismic_r")
         plt.clim(-0.8, 0.8)
+    elif index_name in ["ndvi", "savi", "vari"]:
+        plt.imshow(result, cmap="RdYlGn")
+        plt.clim(-0.15, 0.45)
     elif index_name in ["ndsi"]:
         plt.imshow(result, cmap="Blues")
         plt.clim(0.2, 0.42)

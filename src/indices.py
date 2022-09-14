@@ -13,56 +13,27 @@ import numpy as np
 # 4. calculate index with read rasterfiles, save results as txt-file and return the index as ndarray next to the final resolution after handling
 
 
-def ndvi_calc(resolution, raster_path, clip_shape):
-    """Calculation of the NDVI"""
-    if resolution == "" or resolution == "10":
-        resolution = "10"
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"
-        ):
-            b8_path = item
-    elif resolution != "10":
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
-        ):
-            b8_path = item
+def ndbi_calc(resolution, raster_path, clip_shape):
+    """Calculation of the NDBI"""
+    if resolution == "":
+        resolution = "20"
+    elif resolution == "10":
+        print("NDBI cannot be calculated with a spatial resolution of 10m.")
+        resolution = "20"
     for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"
+        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
     ):
-        b4_path = item
-    b4 = reading.read_raster(b4_path, clip_shape)
-    b8 = reading.read_raster(b8_path, clip_shape)
-    np.seterr(divide="ignore", invalid="ignore")
-    ndvi = (b8 - b4) / (b8 + b4)
-    np.savetxt("./data/ndvi.txt", ndvi)
-    return ndvi, resolution
-
-
-def savi_calc(resolution, raster_path, clip_shape, optional_val):
-    """Calculation of the SAVI"""
-    if optional_val == "":
-        optional_val = 0.5
-    if resolution == "" or resolution == "10":
-        resolution = "10"
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"
-        ):
-            b8_path = item
-    elif resolution != "10":
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
-        ):
-            b8_path = item
+        b8a_path = item
     for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"
+        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B11*.jp2"
     ):
-        b4_path = item
-    b4 = reading.read_raster(b4_path, clip_shape)
-    b8 = reading.read_raster(b8_path, clip_shape)
+        b11_path = item
+    b8a = reading.read_raster(b8a_path, clip_shape)
+    b11 = reading.read_raster(b11_path, clip_shape)
     np.seterr(divide="ignore", invalid="ignore")
-    savi = ((b8 - b4) / (b8 + b4 + optional_val)) * (1 + optional_val)
-    np.savetxt("./data/savi.txt", savi)
-    return savi, resolution
+    ndbi = (b11 - b8a) / (b11 + b8a)
+    np.savetxt("./data/ndbi.txt", ndbi)
+    return ndbi, resolution  
 
 
 def ndmi_calc(resolution, raster_path, clip_shape):
@@ -88,6 +59,54 @@ def ndmi_calc(resolution, raster_path, clip_shape):
     return ndmi, resolution
 
 
+def ndsi_calc(resolution, raster_path, clip_shape):
+    """Calculation of the NDSI"""
+    if resolution == "":
+        resolution = "20"
+    elif resolution == "10":
+        print("NDMI cannot be calculated with a spatial resolution of 10m.")
+        resolution = "20"
+    for item in glob.glob(
+        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"
+    ):
+        b3_path = item
+    for item in glob.glob(
+        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B11*.jp2"
+    ):
+        b11_path = item
+    b3 = reading.read_raster(b3_path, clip_shape)
+    b11 = reading.read_raster(b11_path, clip_shape)
+    np.seterr(divide="ignore", invalid="ignore")
+    ndsi = (b3 - b11) / (b3 + b11)
+    np.savetxt("./data/ndsi.txt", ndsi)
+    return ndsi, resolution
+
+
+def ndvi_calc(resolution, raster_path, clip_shape):
+    """Calculation of the NDVI"""
+    if resolution == "" or resolution == "10":
+        resolution = "10"
+        for item in glob.glob(
+            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"
+        ):
+            b8_path = item
+    elif resolution != "10":
+        for item in glob.glob(
+            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
+        ):
+            b8_path = item
+    for item in glob.glob(
+        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"
+    ):
+        b4_path = item
+    b4 = reading.read_raster(b4_path, clip_shape)
+    b8 = reading.read_raster(b8_path, clip_shape)
+    np.seterr(divide="ignore", invalid="ignore")
+    ndvi = (b8 - b4) / (b8 + b4)
+    np.savetxt("./data/ndvi.txt", ndvi)
+    return ndvi, resolution
+
+
 def ndwi_calc(resolution, raster_path, clip_shape):
     """Calculation of the NDWI"""
     if resolution == "" or resolution == "10":
@@ -111,29 +130,6 @@ def ndwi_calc(resolution, raster_path, clip_shape):
     ndwi = (b3 - b8) / (b3 + b8)
     np.savetxt("./data/ndwi.txt", ndwi)
     return ndwi, resolution
-
-
-def ndsi_calc(resolution, raster_path, clip_shape):
-    """Calculation of the NDSI"""
-    if resolution == "":
-        resolution = "20"
-    elif resolution == "10":
-        print("NDMI cannot be calculated with a spatial resolution of 10m.")
-        resolution = "20"
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"
-    ):
-        b3_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B11*.jp2"
-    ):
-        b11_path = item
-    b3 = reading.read_raster(b3_path, clip_shape)
-    b11 = reading.read_raster(b11_path, clip_shape)
-    np.seterr(divide="ignore", invalid="ignore")
-    ndsi = (b3 - b11) / (b3 + b11)
-    np.savetxt("./data/ndsi.txt", ndsi)
-    return ndsi, resolution
 
 
 def reip_calc(resolution, raster_path, clip_shape):
@@ -167,6 +163,33 @@ def reip_calc(resolution, raster_path, clip_shape):
     reip = 700 + 40 * ((b4 + b7) / 2 - b5) / (b6 - b5)
     np.savetxt("./data/reip.txt", reip)
     return reip, resolution
+
+
+def savi_calc(resolution, raster_path, clip_shape, optional_val):
+    """Calculation of the SAVI"""
+    if optional_val == "":
+        optional_val = 0.5
+    if resolution == "" or resolution == "10":
+        resolution = "10"
+        for item in glob.glob(
+            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"
+        ):
+            b8_path = item
+    elif resolution != "10":
+        for item in glob.glob(
+            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
+        ):
+            b8_path = item
+    for item in glob.glob(
+        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"
+    ):
+        b4_path = item
+    b4 = reading.read_raster(b4_path, clip_shape)
+    b8 = reading.read_raster(b8_path, clip_shape)
+    np.seterr(divide="ignore", invalid="ignore")
+    savi = ((b8 - b4) / (b8 + b4 + optional_val)) * (1 + optional_val)
+    np.savetxt("./data/savi.txt", savi)
+    return savi, resolution
 
 
 def vari_calc(resolution, raster_path, clip_shape):

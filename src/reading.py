@@ -16,7 +16,7 @@ def read_raster(in_raster, clip_shape):
     """
     # test if a cut is found as argument, change the filepath if so
     if clip_shape is not None:
-        print("...cutting raster {}...".format(in_raster))
+        print("...cutting raster ./data/{}...".format(in_raster[-34:]))
         in_shape = "./data/shapes/" + clip_shape
         raster = cut(in_raster, in_shape)
     else:
@@ -24,7 +24,7 @@ def read_raster(in_raster, clip_shape):
         raster = in_raster
     try:
         # open the rasterfile in reading mode
-        print("...reading raster {}...".format(raster))
+        print("...reading raster ./data/{}...".format(raster[7:]))
         dataset = rasterio.open(raster, "r")
     except Exception as err:
         print("...unable to open file: ", str(err), "\nPlease check your input file.")
@@ -32,7 +32,6 @@ def read_raster(in_raster, clip_shape):
     # specify the band which shall be read and read as float54 (important!)
     band = dataset.read(1).astype("float64")
     dataset.close()
-    print("...reading worked.")
     return band
 
 
@@ -64,5 +63,4 @@ def cut(in_raster, in_shape):
     except Exception as err:
         print("...unable to cut raster: ", str(err), "\nPlease check your input files.")
         sys.exit()
-    print("...cutting worked.")
     return out_raster

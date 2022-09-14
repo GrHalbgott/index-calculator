@@ -4,6 +4,7 @@ Calculate different indices of Sentinel-2 raster images and, if desired, cut the
 Following indices are available so far (write an <a href="https://github.com/GrHalbgott/index-calculator/issues">issue</a> if you want some special index to be implemented):
 - Normalized Difference Build-up Index (NDBI)
 - Normalized Difference Moisture Index (NDMI)
+- Normalized Difference Red-Edge Vegetation Index (NDRE)
 - Normalized Difference Snow Index (NDSI)
 - Normalized Difference Vegetation Index (NDVI)
 - Normalized Difference Water Index (NDWI)

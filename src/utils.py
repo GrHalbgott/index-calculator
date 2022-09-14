@@ -7,6 +7,7 @@ import indices
 import sys
 import argparse
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def _check_input_arguments():
@@ -96,10 +97,26 @@ def _check_input_arguments():
 
 def index_calculator(index_name, resolution, raster_path, clip_shape, optional_val):
     """Calculates the desired index and returns a ndarray (raster)"""
+    # only specific indices can be calculated with a spatial resolution of 10 m
+    if index_name in ["ndbi", "ndmi", "ndre", "ndsi", "reip"]:
+        if resolution == "":
+            resolution = "20"
+        elif resolution == "10":
+            print(
+                "{} cannot be calculated with a spatial resolution of 10 m.".format(
+                    index_name.upper()
+                )
+            )
+            resolution = "20"
+    else:
+        pass
+    np.seterr(divide="ignore", invalid="ignore")
     if index_name == "ndbi":
         result, calc_resolution = indices.ndbi_calc(resolution, raster_path, clip_shape)
     elif index_name == "ndmi":
         result, calc_resolution = indices.ndmi_calc(resolution, raster_path, clip_shape)
+    elif index_name == "ndre":
+        result, calc_resolution = indices.ndre_calc(resolution, raster_path, clip_shape)
     elif index_name == "ndsi":
         result, calc_resolution = indices.ndsi_calc(resolution, raster_path, clip_shape)
     elif index_name == "ndvi":
@@ -119,6 +136,7 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
             "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
         )
         sys.exit()
+    np.savetxt("./data/{}.txt".format(index_name), result)
     return result, calc_resolution
 
 
@@ -133,7 +151,7 @@ def index_plot(index_name, result):
     elif index_name in ["ndwi"]:
         plt.imshow(result, cmap="seismic_r")
         plt.clim(-0.8, 0.8)
-    elif index_name in ["ndvi", "savi", "vari"]:
+    elif index_name in ["ndre", "ndvi", "savi", "vari"]:
         plt.imshow(result, cmap="RdYlGn")
         plt.clim(-0.15, 0.45)
     elif index_name in ["ndsi"]:
@@ -147,7 +165,7 @@ def plot_result(index_name, result, calc_resolution, want_plot_saved):
     """Depending on the index, this plots the calculated results differently"""
     plt.figure()
     plt.title(
-        "Calculated {} for region of interest with spatial resolution of {}m".format(
+        "Calculated {} for region of interest with spatial resolution of {} m".format(
             index_name.upper(), calc_resolution
         )
     )

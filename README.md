@@ -39,17 +39,30 @@ The region of interest must be manually added as a shapefile into `./data/shapes
 </details>
 <br/>
 
-## Usage
+## Getting Started
 
-Open the terminal and navigate to the cloned/downloaded folder `index-calculator`. If you don't have the required packages installed already, call this first:
+To run the program every machine having at least Python 3.9 installed is suitable. Your Python environment should additionally include following libraries:
+- numpy
+- matplotlib
+- fiona
+- rasterio
+The rest should be included in the python installation. If you are using Linux or Mac, you should check the relative paths beforehand.
+
+### Installing
+
+Create your virtual python environment and clone the repository. Open the terminal and navigate to the cloned/downloaded folder `index-calculator`. If you don't have the required packages installed already, call this first:
 ```
 $ pip install -r ./requirements.txt
 ```
+You should then be ready to execute the program.
+
+### Usage
+
 If ready, call the program without any arguments to access the help within the terminal with information on how to use the arguments:
 ```
 $ python src/main.py
 
-usage: main.py [-h] -i Index name, string [-c Clip, string] [-r Resolution, integer] [-o Optional value, integer] [-s Save plot, bool]
+usage: main.py [-h] -i Index name [-c Clip] [-r Resolution] [-o Optional value] [-s Save plot]
 
 Calculate an index with Sentinel-2 satellite imagery. You can use the following options to adapt the calculation to your needs. Have fun!
 

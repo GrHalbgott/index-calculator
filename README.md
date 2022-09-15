@@ -10,10 +10,10 @@ Following indices are available so far (write an <a href="https://github.com/GrH
 - Normalized Difference Water Index (NDWI)
 - Red-Edge Inflection Point (REIP)
 - Soil-Adjusted Vegetation Index (SAVI)
+- Structure Intensive Pigment Vegetation Index (SIPI)
 - Visible Atmospherically Resistant Index (VARI)
 
 ## Data
-
 
 Exemplary multispectral raster data can be found <a href="https://heibox.uni-heidelberg.de/d/5a5c773e48cf410a9ed6/">here</a> and should be put into `./data/raster/`.<br/>
 The region of interest must be manually added as a shapefile into `./data/shapes/`.

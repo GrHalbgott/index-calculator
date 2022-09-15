@@ -69,6 +69,7 @@ def _check_input_arguments():
     else:
         # initialize arguments of parser
         args = parser.parse_args()
+
     # Assign arguments to variables and do some checks for error-handling
     index_name = args.index_name.lower()
     clip_shape = args.clip_shape
@@ -98,17 +99,9 @@ def _check_input_arguments():
     )
 
 
-def index_calculator(index_name, resolution, raster_path, clip_shape, optional_val, want_txt_saved):
+def index_calculator(index_name, resolution, raster_path, clip_shape, optional_val):
     """Calculates the desired index and returns a ndarray (raster)"""
-    # only specific indices can be calculated with a spatial resolution of 10 m
-    if index_name in ["ndbi", "ndmi", "ndre", "ndsi", "reip"]:
-        if resolution == "":
-            resolution = "20"
-        elif resolution == "10":
-            print("{} cannot be calculated with a spatial resolution of 10 m.".format(index_name.upper()))
-            resolution = "20"
-    else:
-        pass
+    resolution = resolution_handler(index_name, resolution)
     np.seterr(divide="ignore", invalid="ignore")
     if index_name == "ndbi":
         result, calc_resolution = indices.ndbi_calc(resolution, raster_path, clip_shape)
@@ -126,6 +119,8 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
         result, calc_resolution = indices.reip_calc(resolution, raster_path, clip_shape)
     elif index_name == "savi":
         result, calc_resolution = indices.savi_calc(resolution, raster_path, clip_shape, optional_val)
+    elif index_name == "sipi":
+        result, calc_resolution = indices.sipi_calc(resolution, raster_path, clip_shape)
     elif index_name == "vari":
         result, calc_resolution = indices.vari_calc(resolution, raster_path, clip_shape)
     else:
@@ -133,7 +128,25 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
             "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
         )
         sys.exit()
-    # checks if the user wants to locally save the results as txt-file as well
+    return result, calc_resolution
+
+
+def resolution_handler(index_name, resolution):
+    """Only specific indices can be calculated with a spatial resolution of 10 m"""
+    if index_name in ["ndbi", "ndmi", "ndre", "ndsi", "reip"]:
+        if resolution == "":
+            resolution = "20"
+        elif resolution == "10":
+            print("{} cannot be calculated with a spatial resolution of 10 m.".format(index_name.upper()))
+            resolution = "20"
+    elif index_name in ["ndvi", "ndwi", "savi", "sipi", "vari"]:
+        if resolution == "":
+            resolution = "10"
+    return resolution
+
+
+def write_txt(index_name, want_txt_saved, result):
+    """Checks if the user wants to locally save the results as txt-file as well"""
     while want_txt_saved not in ["true", "false"]:
         want_txt_saved = input("Do you want to save the results/ndarray as txt-file as well? Use y/n: ")
         if want_txt_saved in ["y", "yes"] or want_txt_saved in ["n", "no"]:
@@ -143,31 +156,6 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
         np.savetxt("./data/{}.txt".format(index_name), result)
     else:
         pass
-    return result, calc_resolution
-
-
-def index_plot(index_name, result):
-    """Choose parameters for the plot depending on the calculated index"""
-    if index_name in ["ndbi"]:
-        plt.imshow(result, cmap="BrBG")
-        plt.clim(-0.1, 0.1)
-    elif index_name in ["ndmi"]:
-        plt.imshow(result, cmap="jet_r")
-        plt.clim(-0.2, 0.4)
-    elif index_name in ["ndwi"]:
-        plt.imshow(result, cmap="seismic_r")
-        plt.clim(-0.8, 0.8)
-    elif index_name in ["ndre", "ndvi", "savi", "vari"]:
-        plt.imshow(result, cmap="RdYlGn")
-        plt.clim(-0.15, 0.45)
-    elif index_name in ["ndsi"]:
-        plt.imshow(result, cmap="Blues")
-        plt.clim(0.2, 0.42)
-    elif index_name in ["reip"]:
-        plt.imshow(result, cmap="Greens")
-        plt.clim(705, 740)
-    else:
-        plt.imshow(result)  # viridis is the default cmap
 
 
 def plot_result(index_name, result, calc_resolution, want_plot_saved):
@@ -197,3 +185,30 @@ def plot_result(index_name, result, calc_resolution, want_plot_saved):
         pass
     plt.tight_layout()
     plt.show()
+
+
+def index_plot(index_name, result):
+    """Choose parameters for the plot depending on the calculated index"""
+    if index_name in ["ndbi"]:
+        plt.imshow(result, cmap="BrBG")
+        plt.clim(-0.1, 0.1)  # range -1 to 1
+    elif index_name in ["ndmi"]:
+        plt.imshow(result, cmap="jet_r")
+        plt.clim(-0.2, 0.4)  # range -1 to 1
+    elif index_name in ["ndwi"]:
+        plt.imshow(result, cmap="seismic_r")
+        plt.clim(-0.8, 0.8)  # range -1 to 1
+    elif index_name in ["ndre", "ndvi", "savi", "vari"]:
+        plt.imshow(result, cmap="RdYlGn")
+        plt.clim(-0.15, 0.45)  # range -1 to 1
+    elif index_name in ["ndsi"]:
+        plt.imshow(result, cmap="Blues")
+        plt.clim(0.2, 0.42)  # range -1 to 1
+    elif index_name in ["reip"]:
+        plt.imshow(result, cmap="Greens")
+        plt.clim(705, 740)  # range 705 to 740
+    elif index_name in ["sipi"]:
+        plt.imshow(result, cmap="Greens")
+        plt.clim(0.7, 1.8)  # range 0 to 2
+    else:
+        plt.imshow(result)  # viridis is the default cmap

@@ -38,13 +38,8 @@ def ndmi_calc(resolution, raster_path, clip_shape):
 
 def ndre_calc(resolution, raster_path, clip_shape):
     """Calculation of the NDRE"""
-    if resolution == "" or resolution == "10":
-        resolution = "10"
-        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"):
-            b8_path = item
-    elif resolution != "10":
-        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):
-            b8_path = item
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):
+        b8_path = item
     for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B05*.jp2"):
         b5_path = item
     b5 = reading.read_raster(b5_path, clip_shape)
@@ -83,7 +78,7 @@ def ndvi_calc(resolution, raster_path, clip_shape):
 
 
 def ndwi_calc(resolution, raster_path, clip_shape):
-    """Calculation of the NDWI"""
+    """Calculation of the NDWI (McFeeters 1996)"""
     if resolution == "" or resolution == "10":
         resolution = "10"
         for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"):
@@ -136,10 +131,28 @@ def savi_calc(resolution, raster_path, clip_shape, optional_val):
     return savi, resolution
 
 
+def sipi_calc(resolution, raster_path, clip_shape):
+    """Calculation of the SIPI"""
+    if resolution == "" or resolution == "10":
+        resolution = "10"
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"):
+            b8_path = item
+    elif resolution != "10":
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):
+            b8_path = item
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B02*.jp2"):
+        b2_path = item
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"):
+        b4_path = item
+    b2 = reading.read_raster(b2_path, clip_shape)
+    b4 = reading.read_raster(b4_path, clip_shape)
+    b8 = reading.read_raster(b8_path, clip_shape)
+    sipi = (b8 - b2) / (b8 - b4)
+    return sipi, resolution
+
+
 def vari_calc(resolution, raster_path, clip_shape):
     """Calculation of the VARI"""
-    if resolution == "":
-        resolution = "10"
     for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B02*.jp2"):
         b2_path = item
     for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"):

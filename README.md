@@ -46,6 +46,7 @@ To run the program every machine having at least Python 3.9 installed is suitabl
 - matplotlib
 - fiona
 - rasterio
+
 The rest should be included in the python installation. If you are using Linux or Mac, you should check the relative paths beforehand.
 
 ### Installing
@@ -70,10 +71,11 @@ required arguments:
   -i Index name      String  | Choose which index gets calculated. Check the README for a list of possible indices.
 
 optional arguments:
-  -c Clip            String  | Clip raster to shapefile with shapefile. Use the name and file-type only (like roi.shp). Default value: None
+  -c Clip            String | Clip raster to shapefile with shapefile. Use the name and file-type only (like roi.shp). Default value: None
   -r Resolution      Integer | The indices can be calculated with different resolutions (10, 20, 60 (meters)). Default value: highest resolution possible
   -o Optional value  Integer | Some indices need additional values like the L-value in SAVI. Default value: as in literature
   -s Save plot       Boolean | Do you want to automatically save the plot locally to ./data/? Use true/false. Default: false
+  -t Save as txt     Boolean | Do you want to automatically save the results/ndarray as txt-file locally to ./data/? Use true/false. Default: false
 
 Exiting program, call again to run. Use -h or --help to show the help dialog.
 

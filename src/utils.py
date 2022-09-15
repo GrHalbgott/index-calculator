@@ -54,6 +54,13 @@ def _check_input_arguments():
         help="Boolean | Do you want to automatically save the plot locally to ./data/? Use true/false. Default: false",
         default="false",
     )
+    optional_args.add_argument(
+        "-t",
+        metavar="Save as txt",
+        dest="want_txt_saved",
+        help="Boolean | Do you want to automatically save the results/ndarray as txt-file locally to ./data/? Use true/false. Default: false",
+        default="false",
+    )
     # show help dialog if no arguments are given
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
@@ -70,6 +77,7 @@ def _check_input_arguments():
     resolution = args.resolution
     optional_val = args.optional_val
     want_plot_saved = args.want_plot_saved.lower()
+    want_txt_saved = args.want_txt_saved.lower()
 
     if clip_shape != "":
         while clip_shape[-4] != "." and clip_shape[-3] != ".":
@@ -92,10 +100,13 @@ def _check_input_arguments():
         resolution,
         optional_val,
         want_plot_saved,
+        want_txt_saved,
     )
 
 
-def index_calculator(index_name, resolution, raster_path, clip_shape, optional_val):
+def index_calculator(
+    index_name, resolution, raster_path, clip_shape, optional_val, want_txt_saved
+):
     """Calculates the desired index and returns a ndarray (raster)"""
     # only specific indices can be calculated with a spatial resolution of 10 m
     if index_name in ["ndbi", "ndmi", "ndre", "ndsi", "reip"]:
@@ -136,7 +147,22 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
             "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
         )
         sys.exit()
-    np.savetxt("./data/{}.txt".format(index_name), result)
+    # checks if the user wants to locally save the results as txt-file as well
+    while want_txt_saved not in ["true", "false"]:
+        want_txt_saved = input(
+            "Do you want to save the results/ndarray as txt-file as well? Use y/n: "
+        )
+        if want_txt_saved in ["y", "yes", "yup", "ye"] or want_txt_saved in [
+            "n",
+            "no",
+            "nope",
+        ]:
+            break
+        print("Please provide a valid input.")
+    if want_txt_saved in ["y", "yes", "yup", "ye", "true"]:
+        np.savetxt("./data/{}.txt".format(index_name), result)
+    else:
+        pass
     return result, calc_resolution
 
 

@@ -19,6 +19,7 @@ def main():
         resolution,
         optional_val,
         want_plot_saved,
+        want_txt_saved,
     ) = utils._check_input_arguments()
 
     starttime = time.time()
@@ -28,7 +29,12 @@ def main():
     print("Calculating {}...".format(index_name))
     try:
         result, calc_resolution = utils.index_calculator(
-            index_name, resolution, raster_path, clip_shape, optional_val
+            index_name,
+            resolution,
+            raster_path,
+            clip_shape,
+            optional_val,
+            want_txt_saved,
         )
     except Exception as err:
         print(

@@ -43,7 +43,7 @@ def read_raster(in_raster, clip_shape):
 def cut(in_raster, in_shape):
     """Clip raster file with shape file and generate new raster output file as TIF"""
     # Since the in_raster variable is a long filepath, we want to cut it to only the filename
-    out_raster = "./data" + in_raster[-35:-4] + "_cut.tif"
+    out_raster = "./data" + in_raster[-35:-4] + "_clipped.tif"
     try:
         # open the shapefile in reading mode
         with fiona.open(in_shape, "r") as shapefile:

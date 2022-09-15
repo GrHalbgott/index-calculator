@@ -41,21 +41,21 @@ def _check_input_arguments():
         default="",
     )
     optional_args.add_argument(
-        "-o",
+        "-ov",
         metavar="Optional value",
         dest="optional_val",
         help="Integer | Some indices need additional values like the L-value in SAVI. Default value: as in literature",
         default="",
     )
     optional_args.add_argument(
-        "-s",
+        "-sp",
         metavar="Save plot",
         dest="want_plot_saved",
         help="Boolean | Do you want to automatically save the plot locally to ./data/? Use true/false. Default: false",
         default="false",
     )
     optional_args.add_argument(
-        "-t",
+        "-txt",
         metavar="Save as txt",
         dest="want_txt_saved",
         help="Boolean | Do you want to automatically save the results/ndarray as txt-file locally to ./data/? Use true/false. Default: false",
@@ -183,6 +183,9 @@ def index_plot(index_name, result):
     elif index_name in ["ndsi"]:
         plt.imshow(result, cmap="Blues")
         plt.clim(0.2, 0.42)
+    elif index_name in ["reip"]:
+        plt.imshow(result, cmap="Greens")
+        plt.clim(705, 740)
     else:
         plt.imshow(result)  # viridis is the default cmap
 

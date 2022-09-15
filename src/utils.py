@@ -103,7 +103,9 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
     """Calculates the desired index and returns a ndarray (raster)"""
     resolution = resolution_handler(index_name, resolution)
     np.seterr(divide="ignore", invalid="ignore")
-    if index_name == "ndbi":
+    if index_name == "arvi":
+        result, calc_resolution = indices.arvi_calc(resolution, raster_path, clip_shape, optional_val)
+    elif index_name == "ndbi":
         result, calc_resolution = indices.ndbi_calc(resolution, raster_path, clip_shape)
     elif index_name == "ndmi":
         result, calc_resolution = indices.ndmi_calc(resolution, raster_path, clip_shape)
@@ -139,7 +141,7 @@ def resolution_handler(index_name, resolution):
         elif resolution == "10":
             print("{} cannot be calculated with a spatial resolution of 10 m.".format(index_name.upper()))
             resolution = "20"
-    elif index_name in ["ndvi", "ndwi", "savi", "sipi", "vari"]:
+    elif index_name in ["arvi", "ndvi", "ndwi", "savi", "sipi", "vari"]:
         if resolution == "":
             resolution = "10"
     return resolution
@@ -189,7 +191,10 @@ def plot_result(index_name, result, calc_resolution, want_plot_saved):
 
 def index_plot(index_name, result):
     """Choose parameters for the plot depending on the calculated index"""
-    if index_name in ["ndbi"]:
+    if index_name in ["arvi"]:
+        plt.imshow(result, cmap="RdYlGn")
+        plt.clim(-0.2, 0.8)  # range -1 to 1
+    elif index_name in ["ndbi"]:
         plt.imshow(result, cmap="BrBG")
         plt.clim(-0.1, 0.1)  # range -1 to 1
     elif index_name in ["ndmi"]:

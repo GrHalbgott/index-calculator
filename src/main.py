@@ -19,6 +19,7 @@ def main():
         resolution,
         optional_val,
         want_plot_saved,
+        want_txt_saved,
     ) = utils._check_input_arguments()
 
     starttime = time.time()
@@ -26,28 +27,27 @@ def main():
     raster_path = r"./data/raster/"
 
     print("Calculating {}...".format(index_name))
-    try:
-        result, calc_resolution = utils.index_calculator(
-            index_name, resolution, raster_path, clip_shape, optional_val
-        )
-    except Exception as err:
-        print(
-            "...error occured when calculating the {}: {}.\n Please check your input arguments and files.".format(
-                index_name, str(err)
-            )
-        )
-        sys.exit()
+    result, calc_resolution = utils.index_calculator(
+        index_name,
+        resolution,
+        raster_path,
+        clip_shape,
+        optional_val,
+    )
 
     stoptime = time.time()
 
-    # Print out the information to user
+    # print out the information to user
     print(
         "Finished calculating the {} with a spatial resolution of {} m. \n The script took {:.2f} seconds to run.".format(
             index_name.upper(), calc_resolution, stoptime - starttime
         )
     )
 
-    # Plot the result (ndarray)
+    # write txt file with results/ndarray
+    utils.write_txt(index_name, want_txt_saved, result)
+
+    # plot the result/ndarray
     utils.plot_result(index_name, result, calc_resolution, want_plot_saved)
 
 

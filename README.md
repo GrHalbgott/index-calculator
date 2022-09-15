@@ -10,10 +10,10 @@ Following indices are available so far (write an <a href="https://github.com/GrH
 - Normalized Difference Water Index (NDWI)
 - Red-Edge Inflection Point (REIP)
 - Soil-Adjusted Vegetation Index (SAVI)
+- Structure Intensive Pigment Vegetation Index (SIPI)
 - Visible Atmospherically Resistant Index (VARI)
 
 ## Data
-
 
 Exemplary multispectral raster data can be found <a href="https://heibox.uni-heidelberg.de/d/5a5c773e48cf410a9ed6/">here</a> and should be put into `./data/raster/`.<br/>
 The region of interest must be manually added as a shapefile into `./data/shapes/`.
@@ -46,6 +46,7 @@ To run the program every machine having at least Python 3.9 installed is suitabl
 - matplotlib
 - fiona
 - rasterio
+
 The rest should be included in the python installation. If you are using Linux or Mac, you should check the relative paths beforehand.
 
 ### Installing
@@ -62,18 +63,19 @@ If ready, call the program without any arguments to access the help within the t
 ```
 $ python src/main.py
 
-usage: main.py [-h] -i Index name [-c Clip] [-r Resolution] [-o Optional value] [-s Save plot]
+sage: main.py [-h] -i Index name [-c Clip] [-r Resolution] [-ov Optional value] [-sp Save plot] [-txt Save as txt]
 
 Calculate an index with Sentinel-2 satellite imagery. You can use the following options to adapt the calculation to your needs. Have fun!
 
 required arguments:
-  -i Index name      String  | Choose which index gets calculated. Check the README for a list of possible indices.
+  -i Index name       String | Choose which index gets calculated. Check the README for a list of possible indices.
 
 optional arguments:
-  -c Clip            String  | Clip raster to shapefile with shapefile. Use the name and file-type only (like roi.shp). Default value: None
-  -r Resolution      Integer | The indices can be calculated with different resolutions (10, 20, 60 (meters)). Default value: highest resolution possible
-  -o Optional value  Integer | Some indices need additional values like the L-value in SAVI. Default value: as in literature
-  -s Save plot       Boolean | Do you want to automatically save the plot locally to ./data/? Use true/false. Default: false
+  -c Clip             String | Clip raster to shapefile with shapefile. Use the name and file-type only (like roi.shp). Default value: None
+  -r Resolution       Integer | The indices can be calculated with different resolutions (10, 20, 60 (meters)). Default value: highest resolution possible
+  -ov Optional value  Integer | Some indices need additional values like the L-value in SAVI. Default value: as in literature
+  -sp Save plot       Boolean | Do you want to automatically save the plot locally to ./data/? Use true/false. Default: false
+  -txt Save as txt    Boolean | Do you want to automatically save the results/ndarray as txt-file locally to ./data/? Use true/false. Default: false
 
 Exiting program, call again to run. Use -h or --help to show the help dialog.
 

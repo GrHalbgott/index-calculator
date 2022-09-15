@@ -152,14 +152,10 @@ def index_calculator(
         want_txt_saved = input(
             "Do you want to save the results/ndarray as txt-file as well? Use y/n: "
         )
-        if want_txt_saved in ["y", "yes", "yup", "ye"] or want_txt_saved in [
-            "n",
-            "no",
-            "nope",
-        ]:
+        if want_txt_saved in ["y", "yes"] or want_txt_saved in ["n", "no"]:
             break
         print("Please provide a valid input.")
-    if want_txt_saved in ["y", "yes", "yup", "ye", "true"]:
+    if want_txt_saved in ["y", "yes", "true"]:
         np.savetxt("./data/{}.txt".format(index_name), result)
     else:
         pass
@@ -208,14 +204,10 @@ def plot_result(index_name, result, calc_resolution, want_plot_saved):
     # checks if the user wants to locally save the figure as well
     while want_plot_saved not in ["true", "false"]:
         want_plot_saved = input("Do you want to save the plot as figure? Use y/n: ")
-        if want_plot_saved in ["y", "yes", "yup", "ye"] or want_plot_saved in [
-            "n",
-            "no",
-            "nope",
-        ]:
+        if want_plot_saved in ["y", "yes"] or want_plot_saved in ["n", "no"]:
             break
         print("Please provide a valid input.")
-    if want_plot_saved in ["y", "yes", "yup", "ye", "true"]:
+    if want_plot_saved in ["y", "yes", "true"]:
         plt.savefig("./{}_{}.png".format(index_name.lower(), calc_resolution))
     else:
         pass

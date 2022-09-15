@@ -16,7 +16,7 @@ repos:
   hooks:
     - id: flake8
       args:
-        - "--max-line-length=88"
+        - "--max-line-length=112"
         - "--max-complexity=18"
         - "--ignore=E501,W503,E203,F401,D400,D205,D401,D202,T001,D105,P101"
       additional_dependencies:

@@ -105,6 +105,8 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
     np.seterr(divide="ignore", invalid="ignore")
     if index_name == "arvi":
         result, calc_resolution = indices.arvi_calc(resolution, raster_path, clip_shape, optional_val)
+    elif index_name == "gci":
+        result, calc_resolution = indices.gci_calc(resolution, raster_path, clip_shape)
     elif index_name == "ndbi":
         result, calc_resolution = indices.ndbi_calc(resolution, raster_path, clip_shape)
     elif index_name == "ndmi":
@@ -141,7 +143,7 @@ def resolution_handler(index_name, resolution):
         elif resolution == "10":
             print("{} cannot be calculated with a spatial resolution of 10 m.".format(index_name.upper()))
             resolution = "20"
-    elif index_name in ["arvi", "ndvi", "ndwi", "savi", "sipi", "vari"]:
+    elif index_name in ["arvi", "gci", "ndvi", "ndwi", "savi", "sipi", "vari"]:
         if resolution == "":
             resolution = "10"
     return resolution
@@ -194,6 +196,9 @@ def index_plot(index_name, result):
     if index_name in ["arvi"]:
         plt.imshow(result, cmap="RdYlGn")
         plt.clim(-0.2, 0.8)  # range -1 to 1
+    elif index_name in ["gci"]:
+        plt.imshow(result, cmap="Greens_r")
+        plt.clim(0, 1.1)  # range 0 to 2
     elif index_name in ["ndbi"]:
         plt.imshow(result, cmap="BrBG")
         plt.clim(-0.1, 0.1)  # range -1 to 1

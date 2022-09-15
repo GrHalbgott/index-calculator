@@ -33,6 +33,22 @@ def arvi_calc(resolution, raster_path, clip_shape, optional_val):
     return arvi, resolution
 
 
+def gci_calc(resolution, raster_path, clip_shape):
+    """Calculation of the GCI"""
+    if resolution == "10":
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"):
+            b8_path = item
+    elif resolution != "10":
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):
+            b8_path = item
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"):
+        b3_path = item
+    b3 = reading.read_raster(b3_path, clip_shape)
+    b8 = reading.read_raster(b8_path, clip_shape)
+    gci = b8 / b3 - 1
+    return gci, resolution
+
+
 def ndbi_calc(resolution, raster_path, clip_shape):
     """Calculation of the NDBI"""
     for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):

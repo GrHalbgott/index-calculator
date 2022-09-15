@@ -14,13 +14,9 @@ import glob
 
 def ndbi_calc(resolution, raster_path, clip_shape):
     """Calculation of the NDBI"""
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):
         b8a_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B11*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B11*.jp2"):
         b11_path = item
     b8a = reading.read_raster(b8a_path, clip_shape)
     b11 = reading.read_raster(b11_path, clip_shape)
@@ -30,13 +26,9 @@ def ndbi_calc(resolution, raster_path, clip_shape):
 
 def ndmi_calc(resolution, raster_path, clip_shape):
     """Calculation of the NDMI"""
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):
         b8a_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B11*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B11*.jp2"):
         b11_path = item
     b8a = reading.read_raster(b8a_path, clip_shape)
     b11 = reading.read_raster(b11_path, clip_shape)
@@ -48,18 +40,12 @@ def ndre_calc(resolution, raster_path, clip_shape):
     """Calculation of the NDRE"""
     if resolution == "" or resolution == "10":
         resolution = "10"
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"
-        ):
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"):
             b8_path = item
     elif resolution != "10":
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
-        ):
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):
             b8_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B05*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B05*.jp2"):
         b5_path = item
     b5 = reading.read_raster(b5_path, clip_shape)
     b8 = reading.read_raster(b8_path, clip_shape)
@@ -69,13 +55,9 @@ def ndre_calc(resolution, raster_path, clip_shape):
 
 def ndsi_calc(resolution, raster_path, clip_shape):
     """Calculation of the NDSI"""
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"):
         b3_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B11*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B11*.jp2"):
         b11_path = item
     b3 = reading.read_raster(b3_path, clip_shape)
     b11 = reading.read_raster(b11_path, clip_shape)
@@ -87,18 +69,12 @@ def ndvi_calc(resolution, raster_path, clip_shape):
     """Calculation of the NDVI"""
     if resolution == "" or resolution == "10":
         resolution = "10"
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"
-        ):
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"):
             b8_path = item
     elif resolution != "10":
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
-        ):
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):
             b8_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"):
         b4_path = item
     b4 = reading.read_raster(b4_path, clip_shape)
     b8 = reading.read_raster(b8_path, clip_shape)
@@ -110,18 +86,12 @@ def ndwi_calc(resolution, raster_path, clip_shape):
     """Calculation of the NDWI"""
     if resolution == "" or resolution == "10":
         resolution = "10"
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"
-        ):
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"):
             b8_path = item
     elif resolution != "10":
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
-        ):
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):
             b8_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"):
         b3_path = item
     b3 = reading.read_raster(b3_path, clip_shape)
     b8 = reading.read_raster(b8_path, clip_shape)
@@ -131,21 +101,13 @@ def ndwi_calc(resolution, raster_path, clip_shape):
 
 def reip_calc(resolution, raster_path, clip_shape):
     """Calculation of the REIP"""
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"):
         b4_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B05*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B05*.jp2"):
         b5_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B06*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B06*.jp2"):
         b6_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B07*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B07*.jp2"):
         b7_path = item
     b4 = reading.read_raster(b4_path, clip_shape)
     b5 = reading.read_raster(b5_path, clip_shape)
@@ -161,18 +123,12 @@ def savi_calc(resolution, raster_path, clip_shape, optional_val):
         optional_val = 0.5
     if resolution == "" or resolution == "10":
         resolution = "10"
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"
-        ):
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B08*.jp2"):
             b8_path = item
     elif resolution != "10":
-        for item in glob.glob(
-            raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"
-        ):
+        for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):
             b8_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"):
         b4_path = item
     b4 = reading.read_raster(b4_path, clip_shape)
     b8 = reading.read_raster(b8_path, clip_shape)
@@ -184,17 +140,11 @@ def vari_calc(resolution, raster_path, clip_shape):
     """Calculation of the VARI"""
     if resolution == "":
         resolution = "10"
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B02*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B02*.jp2"):
         b2_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"):
         b3_path = item
-    for item in glob.glob(
-        raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"
-    ):
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"):
         b4_path = item
     b2 = reading.read_raster(b2_path, clip_shape)
     b3 = reading.read_raster(b3_path, clip_shape)

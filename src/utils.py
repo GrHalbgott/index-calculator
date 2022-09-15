@@ -64,9 +64,7 @@ def _check_input_arguments():
     # show help dialog if no arguments are given
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
-        print(
-            " \nExiting program, call again to run. Use -h or --help to show the help dialog."
-        )
+        print(" \nExiting program, call again to run. Use -h or --help to show the help dialog.")
         sys.exit(1)
     else:
         # initialize arguments of parser
@@ -81,14 +79,10 @@ def _check_input_arguments():
 
     if clip_shape != "":
         while clip_shape[-4] != "." and clip_shape[-3] != ".":
-            clip_shape = input(
-                "Cannot read shapefile, please input a valid shapefile (like roi.shp): "
-            )
+            clip_shape = input("Cannot read shapefile, please input a valid shapefile (like roi.shp): ")
 
     while resolution not in ["10", "20", "60", ""]:
-        print(
-            "Your specified resolution cannot be used. Please provide a valid request (10, 20, 60)."
-        )
+        print("Your specified resolution cannot be used. Please provide a valid request (10, 20, 60).")
         resolution = input("Enter the desired spatial resolution: ")
 
     if optional_val != "":
@@ -104,20 +98,14 @@ def _check_input_arguments():
     )
 
 
-def index_calculator(
-    index_name, resolution, raster_path, clip_shape, optional_val, want_txt_saved
-):
+def index_calculator(index_name, resolution, raster_path, clip_shape, optional_val, want_txt_saved):
     """Calculates the desired index and returns a ndarray (raster)"""
     # only specific indices can be calculated with a spatial resolution of 10 m
     if index_name in ["ndbi", "ndmi", "ndre", "ndsi", "reip"]:
         if resolution == "":
             resolution = "20"
         elif resolution == "10":
-            print(
-                "{} cannot be calculated with a spatial resolution of 10 m.".format(
-                    index_name.upper()
-                )
-            )
+            print("{} cannot be calculated with a spatial resolution of 10 m.".format(index_name.upper()))
             resolution = "20"
     else:
         pass
@@ -137,9 +125,7 @@ def index_calculator(
     elif index_name == "reip":
         result, calc_resolution = indices.reip_calc(resolution, raster_path, clip_shape)
     elif index_name == "savi":
-        result, calc_resolution = indices.savi_calc(
-            resolution, raster_path, clip_shape, optional_val
-        )
+        result, calc_resolution = indices.savi_calc(resolution, raster_path, clip_shape, optional_val)
     elif index_name == "vari":
         result, calc_resolution = indices.vari_calc(resolution, raster_path, clip_shape)
     else:
@@ -149,9 +135,7 @@ def index_calculator(
         sys.exit()
     # checks if the user wants to locally save the results as txt-file as well
     while want_txt_saved not in ["true", "false"]:
-        want_txt_saved = input(
-            "Do you want to save the results/ndarray as txt-file as well? Use y/n: "
-        )
+        want_txt_saved = input("Do you want to save the results/ndarray as txt-file as well? Use y/n: ")
         if want_txt_saved in ["y", "yes"] or want_txt_saved in ["n", "no"]:
             break
         print("Please provide a valid input.")

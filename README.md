@@ -4,6 +4,7 @@ Calculate different indices of Sentinel-2 raster images and, if desired, cut the
 Following indices are available so far (write an <a href="https://github.com/GrHalbgott/index-calculator/issues">issue</a> if you want some special index to be implemented):
 - Atmospherically Resistant Vegetation Index (ARVI)
 - Green Chlorophyll Vegetation Index (GCI)
+- Green Normalized Difference Vegetation Index (GNDVI)
 - Normalized Difference Build-up Index (NDBI)
 - Normalized Difference Moisture Index (NDMI)
 - Normalized Difference Red-Edge Vegetation Index (NDRE)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Utilities (check inputs, choose index function, plot)"""
+"""Utilities (choose: index function, resolution, plot range; function to plot)"""
 
 
 import indices

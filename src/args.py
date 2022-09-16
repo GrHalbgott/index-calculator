@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Utilities (check inputs, choose index function, plot)"""
+"""Check arguments given with argparse"""
 
 
 import sys

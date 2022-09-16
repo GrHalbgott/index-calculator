@@ -83,8 +83,8 @@ def index_plot(index_name, result):
         plt.imshow(result, cmap="jet_r")
         plt.clim(-0.2, 0.4)  # range -1 to 1
     elif index_name in ["ndwi"]:
-        plt.imshow(result, cmap="seismic_r")
-        plt.clim(-0.8, 0.8)  # range -1 to 1
+        plt.imshow(result, cmap="BrBG")
+        plt.clim(-0.5, 0.3)  # range -1 to 1
     elif index_name in ["gndvi", "ndre", "ndvi", "savi", "vari"]:
         plt.imshow(result, cmap="RdYlGn")
         plt.clim(-0.15, 0.45)  # range -1 to 1

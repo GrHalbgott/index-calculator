@@ -3,8 +3,24 @@
 """Functions to write data (raster/txt/plots)"""
 
 
+import rasterio
 import matplotlib.pyplot as plt
 import numpy as np
+
+
+def write_clip(out_raster, out_image, out_transform, out_meta):
+    """Use metadata of masked raster file to write a new raster file"""
+    out_meta.update(
+        {
+            "driver": "GTiff",
+            "height": out_image.shape[1],
+            "width": out_image.shape[2],
+            "transform": out_transform,
+        }
+    )
+    # open a new raster file and write the information into it
+    with rasterio.open(out_raster, "w", **out_meta) as dest:
+        dest.write(out_image)
 
 
 def write_txt(index_name, want_txt_saved, result):

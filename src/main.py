@@ -40,7 +40,7 @@ def main():
 
     # print out the information to user
     print(
-        "Finished calculating the {} with a spatial resolution of {} m. \n The script took {:.2f} seconds to run.".format(
+        "...finished calculating the {} with a spatial resolution of {} m. \n The script took {:.2f} seconds to run.".format(
             index_name.upper(), calc_resolution, stoptime - starttime
         )
     )

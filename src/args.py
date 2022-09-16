@@ -79,12 +79,12 @@ def _check_input_arguments():
         while clip_shape[-4] != "." and clip_shape[-3] != ".":
             clip_shape = input("Cannot read shapefile, please input a valid shapefile (like roi.shp): ")
 
-    while resolution not in ["10", "20", "60", ""]:
+    while resolution not in ["", "10", "20", "60"]:
         print("Your specified resolution cannot be used. Please provide a valid request (10, 20, 60).")
         resolution = input("Enter the desired spatial resolution: ")
 
     if optional_val != "":
-        optional_val = int(args.optional_val)
+        optional_val = float(args.optional_val)
 
     return (
         index_name,

@@ -38,8 +38,6 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
         result, calc_resolution = indices.savi_calc(resolution, raster_path, clip_shape, optional_val)
     elif index_name == "sipi":
         result, calc_resolution = indices.sipi_calc(resolution, raster_path, clip_shape)
-    elif index_name == "vari":
-        result, calc_resolution = indices.vari_calc(resolution, raster_path, clip_shape)
     else:
         print(
             "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
@@ -62,7 +60,7 @@ def resolution_handler(index_name, resolution):
         elif resolution == "10":
             print("{} cannot be calculated with a spatial resolution of 10 m.".format(index_name.upper()))
             resolution = "20"
-    elif index_name in ["arvi", "gci", "ndvi", "ndwi", "savi", "sipi", "vari"]:
+    elif index_name in ["arvi", "gci", "ndvi", "ndwi", "savi", "sipi"]:
         if resolution == "":
             resolution = "10"
     return resolution
@@ -85,7 +83,7 @@ def index_plot(index_name, result):
     elif index_name in ["ndwi"]:
         plt.imshow(result, cmap="BrBG")
         plt.clim(-0.5, 0.3)  # range -1 to 1
-    elif index_name in ["gndvi", "ndre", "ndvi", "savi", "vari"]:
+    elif index_name in ["gndvi", "ndre", "ndvi", "savi"]:
         plt.imshow(result, cmap="RdYlGn")
         plt.clim(-0.15, 0.45)  # range -1 to 1
     elif index_name in ["ndsi"]:

@@ -194,18 +194,3 @@ def sipi_calc(resolution, raster_path, clip_shape):
     b8 = reading.read_raster(b8_path, clip_shape)
     sipi = (b8 - b2) / (b8 - b4)
     return sipi, resolution
-
-
-def vari_calc(resolution, raster_path, clip_shape):
-    """Calculation of the VARI"""
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B02*.jp2"):
-        b2_path = item
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"):
-        b3_path = item
-    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B04*.jp2"):
-        b4_path = item
-    b2 = reading.read_raster(b2_path, clip_shape)
-    b3 = reading.read_raster(b3_path, clip_shape)
-    b4 = reading.read_raster(b4_path, clip_shape)
-    vari = (b3 - b4) / (b3 + b4 - b2)
-    return vari, resolution

@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 """Functions to read data (raster/vector)"""
 
+
+import writing
 import sys
 import os
 import fiona
@@ -41,6 +43,7 @@ def read_raster(in_raster, clip_shape):
     # delete clipped file after reading
     if clip_shape != "":
         os.remove(raster)
+        print("...deleting raster ./data/{}...".format(raster[7:]))
     else:
         pass
     return band
@@ -59,18 +62,7 @@ def clip(in_raster, in_shape):
             out_image, out_transform = rasterio.mask.mask(src, shapes, crop=True)
             # take the metadata of the original rasterfile
             out_meta = src.meta
-        # update the metadata of the new rasterfile
-        out_meta.update(
-            {
-                "driver": "GTiff",
-                "height": out_image.shape[1],
-                "width": out_image.shape[2],
-                "transform": out_transform,
-            }
-        )
-        # open a new raster file and write the information into it
-        with rasterio.open(out_raster, "w", **out_meta) as dest:
-            dest.write(out_image)
+        writing.write_clip(out_raster, out_image, out_transform, out_meta)
     except Exception as err:
         print(
             "...unable to clip raster with shapefile: ",

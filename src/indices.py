@@ -49,6 +49,18 @@ def gci_calc(resolution, raster_path, clip_shape):
     return gci, resolution
 
 
+def gndvi_calc(resolution, raster_path, clip_shape):
+    """Calculation of the GNDVI"""
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B03*.jp2"):
+        b3_path = item
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B09*.jp2"):
+        b9_path = item
+    b3 = reading.read_raster(b3_path, clip_shape)
+    b9 = reading.read_raster(b9_path, clip_shape)
+    gndvi = (b9 - b3) / (b9 + b3)
+    return gndvi, resolution
+
+
 def ndbi_calc(resolution, raster_path, clip_shape):
     """Calculation of the NDBI"""
     for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):

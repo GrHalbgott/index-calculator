@@ -3,8 +3,9 @@
 """Calculation of indeces"""
 
 
+import args
 import utils
-import sys
+import writing
 import time
 
 
@@ -20,7 +21,7 @@ def main():
         optional_val,
         want_plot_saved,
         want_txt_saved,
-    ) = utils._check_input_arguments()
+    ) = args._check_input_arguments()
 
     starttime = time.time()
 
@@ -45,7 +46,7 @@ def main():
     )
 
     # write txt file with results/ndarray
-    utils.write_txt(index_name, want_txt_saved, result)
+    writing.write_txt(index_name, want_txt_saved, result)
 
     # plot the result/ndarray
     utils.plot_result(index_name, result, calc_resolution, want_plot_saved)

@@ -7,4 +7,4 @@ import subprocess
 
 def test_run_main():
     """Tests whether main runs correctly"""
-    subprocess.check_call(["python", "./src/main.py", "roi.shp", "ndmi"])
+    subprocess.check_call(["python", "src/main.py", "- c roi.shp", "-i ndmi"])

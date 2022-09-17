@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Calculation of indices"""
+"""Program to calculate different indices"""
 
 
-import args
+import chk_args
 import utils
 import writing
 import time
@@ -19,9 +19,11 @@ def main():
         clip_shape,
         resolution,
         optional_val,
+        want_raster_saved,
+        want_plot,
         want_plot_saved,
         want_txt_saved,
-    ) = args._check_input_arguments()
+    ) = chk_args._check_input_arguments()
 
     starttime = time.time()
 
@@ -46,10 +48,13 @@ def main():
     )
 
     # write txt file with results/ndarray
-    writing.write_txt(index_name, want_txt_saved, result)
+    writing.write_txt(index_name, result, want_txt_saved)
 
-    # plot the result/ndarray
-    utils.plot_result(index_name, result, calc_resolution, want_plot_saved)
+    # export the result as tif or plot the result/ndarray
+    if want_raster_saved == "true":
+        writing.write_raster(index_name, result, want_raster_saved)
+    else:
+        utils.plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
 
 
 if __name__ == "__main__":

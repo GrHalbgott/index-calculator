@@ -3,4 +3,4 @@
 """__description__"""
 
 __author__ = "Niko Kolaxidis"
-__email__ = "niko.kolaxidis@posteo.de"
+__email__ = "niko.k@posteo.org"

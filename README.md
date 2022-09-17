@@ -14,7 +14,6 @@ Following indices are available so far (write an <a href="https://github.com/GrH
 - Red-Edge Inflection Point (REIP)
 - Soil-Adjusted Vegetation Index (SAVI)
 - Structure Intensive Pigment Vegetation Index (SIPI)
-- Visible Atmospherically Resistant Index (VARI)
 
 ## Data
 

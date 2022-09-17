@@ -40,6 +40,7 @@ def read_raster(in_raster, clip_shape):
     # specify the band which shall be read and read as float64 (important!)
     band = dataset.read(1).astype("float64")
     dataset.close()
+
     # delete clipped file after reading
     if clip_shape != "":
         os.remove(raster)

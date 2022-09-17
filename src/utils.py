@@ -66,7 +66,7 @@ def resolution_handler(index_name, resolution):
     return resolution
 
 
-def index_plot(index_name, result):
+def plottype_handler(index_name, result):
     """Choose parameters for the plot depending on the calculated index"""
     if index_name in ["arvi"]:
         plt.imshow(result, cmap="RdYlGn")
@@ -74,15 +74,12 @@ def index_plot(index_name, result):
     elif index_name in ["gci"]:
         plt.imshow(result, cmap="Greens_r")
         plt.clim(0, 1.1)  # range 0 to 2
-    elif index_name in ["ndbi"]:
+    elif index_name in ["ndbi", "ndwi"]:
         plt.imshow(result, cmap="BrBG")
         plt.clim(-0.1, 0.1)  # range -1 to 1
     elif index_name in ["ndmi"]:
         plt.imshow(result, cmap="jet_r")
         plt.clim(-0.2, 0.4)  # range -1 to 1
-    elif index_name in ["ndwi"]:
-        plt.imshow(result, cmap="BrBG")
-        plt.clim(-0.5, 0.3)  # range -1 to 1
     elif index_name in ["gndvi", "ndre", "ndvi", "savi"]:
         plt.imshow(result, cmap="RdYlGn")
         plt.clim(-0.15, 0.45)  # range -1 to 1
@@ -99,21 +96,30 @@ def index_plot(index_name, result):
         plt.imshow(result)  # viridis is the default cmap
 
 
-def plot_result(index_name, result, calc_resolution, want_plot_saved):
+def plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved):
     """Depending on the index, this plots the calculated results differently"""
-    plt.figure()
-    plt.title(
-        "Calculated {} for region of interest with spatial resolution of {} m".format(
-            index_name.upper(), calc_resolution
+    while want_plot not in ["true", "false"]:
+        want_plot = input("Do you want to generate a plot? Use y/n: ")
+        if want_plot in ["y", "yes"] or want_plot in ["n", "no"]:
+            break
+        print("Please provide a valid input.")
+    if want_plot in ["y", "yes", "true"]:
+        plt.figure()
+        plt.title(
+            "Calculated {} for region of interest with spatial resolution of {} m".format(
+                index_name.upper(), calc_resolution
+            )
         )
-    )
-    plt.xlabel("X-Axis")
-    plt.ylabel("Y-Axis")
-    # use different cmaps and limits depending on the calculated index
-    index_plot(index_name, result)
-    # plot a colorbar with the same height as the plot
-    im_ratio = result.shape[0] / result.shape[1]
-    plt.colorbar(fraction=0.04625 * im_ratio)
-    writing.save_plot(index_name, calc_resolution, want_plot_saved)
-    plt.tight_layout()
-    plt.show()
+        plt.xlabel("X-Axis")
+        plt.ylabel("Y-Axis")
+        # use different cmaps and limits depending on the calculated index
+        plottype_handler(index_name, result)
+        # plot a colorbar with the same height as the plot
+        im_ratio = result.shape[0] / result.shape[1]
+        plt.colorbar(fraction=0.04625 * im_ratio)
+        # check if user wants to save the plot
+        writing.save_plot(index_name, calc_resolution, want_plot_saved)
+        plt.tight_layout()
+        plt.show()
+    else:
+        pass

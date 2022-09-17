@@ -45,17 +45,31 @@ def _check_input_arguments():
         default="",
     )
     optional_args.add_argument(
+        "-tif",
+        metavar="Save raster",
+        dest="want_raster_saved",
+        help="Boolean | Do you want to export the results/ndarray as tif-file locally to ./results/? Use true/false. Default: false",
+        default="false",
+    )
+    optional_args.add_argument(
+        "-gp",
+        metavar="Generate plot",
+        dest="want_plot",
+        help="Boolean | Do you want to generate a plot? Use true/false. Default: true",
+        default="true",
+    )
+    optional_args.add_argument(
         "-sp",
         metavar="Save plot",
         dest="want_plot_saved",
-        help="Boolean | Do you want to automatically save the plot locally to ./data/? Use true/false. Default: false",
+        help="Boolean | Do you want to automatically save the plot locally to ./results/? Use true/false. Default: false",
         default="false",
     )
     optional_args.add_argument(
         "-txt",
         metavar="Save as txt",
         dest="want_txt_saved",
-        help="Boolean | Do you want to automatically save the results/ndarray as txt-file locally to ./data/? Use true/false. Default: false",
+        help="Boolean | Do you want to automatically save the results/ndarray as txt-file locally to ./results/? Use true/false. Default: false",
         default="false",
     )
     # show help dialog if no arguments are given
@@ -72,6 +86,8 @@ def _check_input_arguments():
     clip_shape = args.clip_shape
     resolution = args.resolution
     optional_val = args.optional_val
+    want_raster_saved = args.want_txt_saved.lower()
+    want_plot = args.want_plot.lower()
     want_plot_saved = args.want_plot_saved.lower()
     want_txt_saved = args.want_txt_saved.lower()
 
@@ -91,6 +107,8 @@ def _check_input_arguments():
         clip_shape,
         resolution,
         optional_val,
+        want_raster_saved,
+        want_plot,
         want_plot_saved,
         want_txt_saved,
     )

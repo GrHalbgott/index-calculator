@@ -3,9 +3,9 @@
 """Functions to write data (raster/txt/plots)"""
 
 
-import os
 import sys
 import glob
+import warnings
 import rasterio
 import matplotlib.pyplot as plt
 import numpy as np
@@ -34,6 +34,7 @@ def write_txt(index_name, result, want_txt_saved):
             break
         print("ERROR: Please provide a valid input.")
     if want_txt_saved in ["y", "yes", "true"]:
+        print("...writing result to file...")
         np.savetxt("./results/{}.txt".format(index_name), result)
     else:
         pass
@@ -47,6 +48,7 @@ def save_plot(want_plot_saved, index_name, calc_resolution):
             break
         print("ERROR: Please provide a valid input.")
     if want_plot_saved in ["y", "yes", "true"]:
+        print("...saving plot to file...")
         plt.savefig("./results/{}_{}.png".format(index_name.lower(), calc_resolution), bbox_inches="tight")
     else:
         pass
@@ -60,7 +62,7 @@ def write_raster(index_name, calc_resolution, raster_path, clip_shape, want_rast
             break
         print("ERROR: Please provide a valid input.")
     if want_raster_saved in ["y", "yes", "true"]:
-        print("Exporting raster to file...")
+        print("...exporting raster to file...")
         # search for reference raster
         if clip_shape != "":
             for item in glob.glob("./data/*.tif"):
@@ -82,7 +84,6 @@ def write_raster(index_name, calc_resolution, raster_path, clip_shape, want_rast
         # open a new raster file and write the information into it
         with rasterio.open("./results/{}.tif".format(index_name), "w", **res_meta) as dest:
             dest.write(result, indexes=1)
-        print("...export finished.")
     else:
         pass
 
@@ -95,8 +96,10 @@ def write_statistics(index_name, result, calc_resolution, want_statistics):
             break
         print("ERROR: Please provide a valid input.")
     if want_statistics in ["y", "yes", "true"]:
-        print("Generating statistics...")
+        warnings.filterwarnings(action="ignore", message="All-NaN slice encountered")
         # generate histogram and save it as file
+        print("...generating histogram...")
+        plt.figure()
         plt.title(
             "Calculated {} for region of interest with spatial resolution of {} m".format(
                 index_name.upper(), calc_resolution
@@ -108,6 +111,7 @@ def write_statistics(index_name, result, calc_resolution, want_statistics):
         plt.savefig("./results/{}_hist.png".format(index_name.lower()), bbox_inches="tight")
 
         # generate descriptive statistics and save them as txt-file
+        print("...generating descriptive statistics...")
         try:
             fileout = open("./results/{}_statistics.txt".format(index_name), "w")
         except Exception as err:
@@ -119,4 +123,3 @@ def write_statistics(index_name, result, calc_resolution, want_statistics):
             )
         )
         fileout.close()
-        print("...finished.")

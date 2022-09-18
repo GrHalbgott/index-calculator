@@ -85,4 +85,17 @@ optional arguments:
 Exiting program, call again to run. Use -h or --help to show the help dialog.
 
 ```
+
+### Cleaning up
+
+If finished with multiple analyses, you can empty ./results/  and delete temporary used files from ./data/. To do this, call:
+```
+$ python src/cleanup.py
+```
+**Make sure to save any results you want to keep to another location!**
+
+---
+
+### *Footnote:*
+
 If you have any questions, wishes or ideas, feel free to ask me in the <a href="https://github.com/GrHalbgott/index-calculator/issues">issues section</a>, I'm looking forward to it. Have fun!

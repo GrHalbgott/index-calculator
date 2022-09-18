@@ -102,6 +102,10 @@ def _check_input_arguments():
     if optional_val != "":
         optional_val = float(args.optional_val)
 
+    if want_plot == "false" and want_plot_saved == "true":
+        print("Changed -gp to true. You need to generate a plot to be able to save it.")
+        want_plot = "true"
+
     return (
         index_name,
         clip_shape,

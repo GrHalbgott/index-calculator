@@ -42,12 +42,6 @@ def read_raster(in_raster, clip_shape):
     band = dataset.read(1).astype("float64")
     dataset.close()
 
-    # delete clipped file after reading
-    # if clip_shape != "":
-    #     os.remove(raster)
-    #     print("...deleting raster ./data/{}...".format(raster[7:]))
-    # else:
-    #     pass
     return band
 
 

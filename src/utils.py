@@ -3,6 +3,7 @@
 """Utilities (choose: index function, resolution, plot range; function to plot)"""
 
 
+import os
 import indices
 import writing
 import sys
@@ -123,3 +124,12 @@ def plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
         plt.show()
     else:
         pass
+
+
+def cleanup():
+    """Loop through folder data and delete temporary files"""
+    retain = ["raster", "shapes"]
+
+    for item in os.listdir("./data/"):
+        if item not in retain:
+            os.remove("./data/" + item)

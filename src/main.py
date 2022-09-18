@@ -52,6 +52,9 @@ def main():
     # plot the result/ndarray
     utils.plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
 
+    # delete any temporary files
+    utils.cleanup()
+
 
 if __name__ == "__main__":
     main()

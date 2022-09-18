@@ -3,6 +3,7 @@
 """Functions to read data (raster/vector)"""
 
 
+import utils
 import writing
 import sys
 import os
@@ -42,11 +43,11 @@ def read_raster(in_raster, clip_shape):
     dataset.close()
 
     # delete clipped file after reading
-    if clip_shape != "":
-        os.remove(raster)
-        print("...deleting raster ./data/{}...".format(raster[7:]))
-    else:
-        pass
+    # if clip_shape != "":
+    #     os.remove(raster)
+    #     print("...deleting raster ./data/{}...".format(raster[7:]))
+    # else:
+    #     pass
     return band
 
 

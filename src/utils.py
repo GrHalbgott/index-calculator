@@ -10,34 +10,34 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def index_calculator(index_name, resolution, raster_path, clip_shape, optional_val):
+def index_calculator(index_name, resolution, raster_path, clip_shape, optional_val, want_raster_saved):
     """Calculates the desired index and returns a ndarray (raster)"""
-    resolution = resolution_handler(index_name, resolution)
+    calc_resolution = resolution_handler(index_name, resolution)
     np.seterr(divide="ignore", invalid="ignore")
     if index_name == "arvi":
-        result, calc_resolution = indices.arvi_calc(resolution, raster_path, clip_shape, optional_val)
+        result, calc_resolution = indices.arvi_calc(calc_resolution, raster_path, clip_shape, optional_val)
     elif index_name == "gci":
-        result, calc_resolution = indices.gci_calc(resolution, raster_path, clip_shape)
+        result, calc_resolution = indices.gci_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "gndvi":
-        result, calc_resolution = indices.gndvi_calc(resolution, raster_path, clip_shape)
+        result, calc_resolution = indices.gndvi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndbi":
-        result, calc_resolution = indices.ndbi_calc(resolution, raster_path, clip_shape)
+        result, calc_resolution = indices.ndbi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndmi":
-        result, calc_resolution = indices.ndmi_calc(resolution, raster_path, clip_shape)
+        result, calc_resolution = indices.ndmi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndre":
-        result, calc_resolution = indices.ndre_calc(resolution, raster_path, clip_shape)
+        result, calc_resolution = indices.ndre_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndsi":
-        result, calc_resolution = indices.ndsi_calc(resolution, raster_path, clip_shape)
+        result, calc_resolution = indices.ndsi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndvi":
-        result, calc_resolution = indices.ndvi_calc(resolution, raster_path, clip_shape)
+        result, calc_resolution = indices.ndvi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndwi":
-        result, calc_resolution = indices.ndwi_calc(resolution, raster_path, clip_shape)
+        result, calc_resolution = indices.ndwi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "reip":
-        result, calc_resolution = indices.reip_calc(resolution, raster_path, clip_shape)
+        result, calc_resolution = indices.reip_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "savi":
-        result, calc_resolution = indices.savi_calc(resolution, raster_path, clip_shape, optional_val)
+        result, calc_resolution = indices.savi_calc(calc_resolution, raster_path, clip_shape, optional_val)
     elif index_name == "sipi":
-        result, calc_resolution = indices.sipi_calc(resolution, raster_path, clip_shape)
+        result, calc_resolution = indices.sipi_calc(calc_resolution, raster_path, clip_shape)
     else:
         print(
             "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
@@ -50,20 +50,20 @@ def resolution_handler(index_name, resolution):
     """Only specific indices can be calculated with a spatial resolution of 10 m"""
     if index_name in ["gndvi"]:
         if resolution == "":
-            resolution = "60"
+            calc_resolution = "60"
         elif resolution == "10" or resolution == "20":
             print("{} can only be calculated with a spatial resolution of 60 m.".format(index_name.upper()))
-            resolution = "60"
+            calc_resolution = "60"
     elif index_name in ["ndbi", "ndmi", "ndre", "ndsi", "reip"]:
         if resolution == "":
-            resolution = "20"
+            calc_resolution = "20"
         elif resolution == "10":
             print("{} cannot be calculated with a spatial resolution of 10 m.".format(index_name.upper()))
-            resolution = "20"
+            calc_resolution = "20"
     elif index_name in ["arvi", "gci", "ndvi", "ndwi", "savi", "sipi"]:
         if resolution == "":
-            resolution = "10"
-    return resolution
+            calc_resolution = "10"
+    return calc_resolution
 
 
 def plottype_handler(index_name, result):
@@ -118,7 +118,7 @@ def plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
         im_ratio = result.shape[0] / result.shape[1]
         plt.colorbar(fraction=0.04625 * im_ratio)
         # check if user wants to save the plot
-        writing.save_plot(index_name, calc_resolution, want_plot_saved)
+        writing.save_plot(want_plot_saved, index_name, calc_resolution)
         plt.tight_layout()
         plt.show()
     else:

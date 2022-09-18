@@ -31,11 +31,7 @@ def main():
 
     print("Calculating {}...".format(index_name))
     result, calc_resolution = utils.index_calculator(
-        index_name,
-        resolution,
-        raster_path,
-        clip_shape,
-        optional_val,
+        index_name, resolution, raster_path, clip_shape, optional_val, want_raster_saved
     )
 
     stoptime = time.time()
@@ -50,11 +46,11 @@ def main():
     # write txt file with results/ndarray
     writing.write_txt(index_name, result, want_txt_saved)
 
-    # export the result as tif or plot the result/ndarray
-    if want_raster_saved == "true":
-        writing.write_raster(index_name, result, want_raster_saved)
-    else:
-        utils.plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
+    # export as raster tif-file
+    writing.write_raster(index_name, calc_resolution, raster_path, clip_shape, want_raster_saved, result)
+
+    # plot the result/ndarray
+    utils.plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
 
 
 if __name__ == "__main__":

@@ -86,7 +86,7 @@ def _check_input_arguments():
     clip_shape = args.clip_shape
     resolution = args.resolution
     optional_val = args.optional_val
-    want_raster_saved = args.want_txt_saved.lower()
+    want_raster_saved = args.want_raster_saved.lower()
     want_plot = args.want_plot.lower()
     want_plot_saved = args.want_plot_saved.lower()
     want_txt_saved = args.want_txt_saved.lower()

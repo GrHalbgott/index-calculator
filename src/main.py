@@ -23,6 +23,7 @@ def main():
         want_plot,
         want_plot_saved,
         want_txt_saved,
+        want_statistics,
     ) = chk_args._check_input_arguments()
 
     starttime = time.time()
@@ -52,8 +53,11 @@ def main():
     # plot the result/ndarray
     utils.plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
 
+    # generate statistics (histogram & descriptives)
+    writing.write_statistics(index_name, result, calc_resolution, want_statistics)
+
     # delete any temporary files
-    utils.cleanup()
+    utils.cleanup_temp()
 
 
 if __name__ == "__main__":

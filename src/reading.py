@@ -3,10 +3,8 @@
 """Functions to read data (raster/vector)"""
 
 
-import utils
 import writing
 import sys
-import os
 import fiona
 import rasterio
 import rasterio.mask
@@ -18,7 +16,7 @@ def read_raster(in_raster, clip_shape):
     param in_dem: path to input file (string)
     output: returns a Numpy array (Null values are np.nan)
     """
-    # test if a clip is found as argument, if so change the filepath
+    # test if a clip is found as argument, if so change the filepath to clipped file
     if clip_shape != "":
         print("...clipping raster ./data/.../{}...".format(in_raster[-34:]))
         in_shape = "./data/shapes/" + clip_shape
@@ -33,7 +31,7 @@ def read_raster(in_raster, clip_shape):
         dataset = rasterio.open(raster, "r")
     except Exception as err:
         print(
-            "...unable to open raster file: ",
+            "...ERROR: Unable to open raster file: ",
             str(err),
             "\nPlease check your input file.",
         )
@@ -41,7 +39,6 @@ def read_raster(in_raster, clip_shape):
     # specify the band which shall be read and read as float64 (important!)
     band = dataset.read(1).astype("float64")
     dataset.close()
-
     return band
 
 
@@ -61,7 +58,7 @@ def clip(in_raster, in_shape):
         writing.write_clip(out_raster, out_image, out_transform, out_meta)
     except Exception as err:
         print(
-            "...unable to clip raster with shapefile: ",
+            "...ERROR: unable to clip raster with shapefile: ",
             str(err),
             "\nPlease check your input files.",
         )

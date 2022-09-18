@@ -3,17 +3,18 @@
 """Utilities (choose: index function, resolution, plot range; function to plot)"""
 
 
-import os
 import indices
 import writing
+import os
 import sys
 import matplotlib.pyplot as plt
 import numpy as np
 
 
 def index_calculator(index_name, resolution, raster_path, clip_shape, optional_val, want_raster_saved):
-    """Calculates the desired index and returns a ndarray (raster)"""
+    """Calculates the desired index and returns a ndarray"""
     calc_resolution = resolution_handler(index_name, resolution)
+    # ignore error messages during calculation
     np.seterr(divide="ignore", invalid="ignore")
     if index_name == "arvi":
         result, calc_resolution = indices.arvi_calc(calc_resolution, raster_path, clip_shape, optional_val)
@@ -41,7 +42,7 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
         result, calc_resolution = indices.sipi_calc(calc_resolution, raster_path, clip_shape)
     else:
         print(
-            "Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
+            "ERROR: Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
         )
         sys.exit()
     return result, calc_resolution
@@ -103,7 +104,7 @@ def plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
         want_plot = input("Do you want to generate a plot? Use y/n: ")
         if want_plot in ["y", "yes"] or want_plot in ["n", "no"]:
             break
-        print("Please provide a valid input.")
+        print("ERROR: Please provide a valid input.")
     if want_plot in ["y", "yes", "true"]:
         plt.figure()
         plt.title(
@@ -126,8 +127,8 @@ def plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
         pass
 
 
-def cleanup():
-    """Loop through folder data and delete temporary files"""
+def cleanup_temp():
+    """Loop through ./data/ and delete files no longer needed"""
     retain = ["raster", "shapes"]
 
     for item in os.listdir("./data/"):

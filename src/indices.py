@@ -6,10 +6,10 @@ import reading
 import glob
 
 # The functions all have the same structure:
-# 1. handle resolution input (test if empty -> highest, if not 10 -> change 08 to 8A)
+# 1. handle resolution and/or optional_val input
 # 2. look for files with specific bands in their names using glob.glob and *
 # 3. parse the path to the files into read_raster() with clip information
-# 4. calculate index with read rasterfiles and return the index as ndarray next to the final resolution after handling
+# 4. calculate index with read rasterfiles and return the index as ndarray next to the final resolution
 
 
 def arvi_calc(resolution, raster_path, clip_shape, optional_val):

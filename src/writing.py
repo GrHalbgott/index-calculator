@@ -3,6 +3,8 @@
 """Functions to write data (raster/txt/plots)"""
 
 
+import os
+import sys
 import glob
 import rasterio
 import matplotlib.pyplot as plt
@@ -30,7 +32,7 @@ def write_txt(index_name, result, want_txt_saved):
         want_txt_saved = input("Do you want to save the results/ndarray as txt-file as well? Use y/n: ")
         if want_txt_saved in ["y", "yes"] or want_txt_saved in ["n", "no"]:
             break
-        print("Please provide a valid input.")
+        print("ERROR: Please provide a valid input.")
     if want_txt_saved in ["y", "yes", "true"]:
         np.savetxt("./results/{}.txt".format(index_name), result)
     else:
@@ -43,7 +45,7 @@ def save_plot(want_plot_saved, index_name, calc_resolution):
         want_plot_saved = input("Do you want to save the plot as figure? Use y/n: ")
         if want_plot_saved in ["y", "yes"] or want_plot_saved in ["n", "no"]:
             break
-        print("Please provide a valid input.")
+        print("ERROR: Please provide a valid input.")
     if want_plot_saved in ["y", "yes", "true"]:
         plt.savefig("./results/{}_{}.png".format(index_name.lower(), calc_resolution), bbox_inches="tight")
     else:
@@ -56,7 +58,7 @@ def write_raster(index_name, calc_resolution, raster_path, clip_shape, want_rast
         want_raster_saved = input("Do you want to export the results as tif-file? Use y/n: ")
         if want_raster_saved in ["y", "yes"] or want_raster_saved in ["n", "no"]:
             break
-        print("Please provide a valid input.")
+        print("ERROR: Please provide a valid input.")
     if want_raster_saved in ["y", "yes", "true"]:
         print("Exporting raster to file...")
         # search for reference raster
@@ -77,11 +79,44 @@ def write_raster(index_name, calc_resolution, raster_path, clip_shape, want_rast
                 }
             )
 
-        print(res_meta)
-
         # open a new raster file and write the information into it
         with rasterio.open("./results/{}.tif".format(index_name), "w", **res_meta) as dest:
             dest.write(result, indexes=1)
         print("...export finished.")
     else:
         pass
+
+
+def write_statistics(index_name, result, calc_resolution, want_statistics):
+    """Checks if the user wants to generate statistics and does it"""
+    while want_statistics not in ["true", "false"]:
+        want_statistics = input("Do you want to generate statistics? Use y/n: ")
+        if want_statistics in ["y", "yes"] or want_statistics in ["n", "no"]:
+            break
+        print("ERROR: Please provide a valid input.")
+    if want_statistics in ["y", "yes", "true"]:
+        print("Generating statistics...")
+        # generate histogram and save it as file
+        plt.title(
+            "Calculated {} for region of interest with spatial resolution of {} m".format(
+                index_name.upper(), calc_resolution
+            )
+        )
+        plt.xlabel("X-Axis")
+        plt.ylabel("Y-Axis")
+        plt.hist(result)
+        plt.savefig("./results/{}_hist.png".format(index_name.lower()), bbox_inches="tight")
+
+        # generate descriptive statistics and save them as txt-file
+        try:
+            fileout = open("./results/{}_statistics.txt".format(index_name), "w")
+        except Exception as err:
+            print("ERROR: Could not write file for statistics: {}.".format(err))
+            sys.exit()
+        fileout.write(
+            "--- STATISTICS OF CALCULATED {} ---\nMinimum: {:.2f}\nMaximum: {:.2f}\nMean: {:.2f}\nStd.dev: {:.2f}".format(
+                index_name.upper(), np.nanmin(result), np.nanmax(result), np.nanmean(result), np.nanstd(result)
+            )
+        )
+        fileout.close()
+        print("...finished.")

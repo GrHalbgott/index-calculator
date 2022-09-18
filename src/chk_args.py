@@ -62,14 +62,21 @@ def _check_input_arguments():
         "-sp",
         metavar="Save plot",
         dest="want_plot_saved",
-        help="Boolean | Do you want to automatically save the plot locally to ./results/? Use true/false. Default: false",
+        help="Boolean | Do you want to save the plot locally to ./results/? Use true/false. Default: false",
         default="false",
     )
     optional_args.add_argument(
         "-txt",
         metavar="Save as txt",
         dest="want_txt_saved",
-        help="Boolean | Do you want to automatically save the results/ndarray as txt-file locally to ./results/? Use true/false. Default: false",
+        help="Boolean | Do you want to save the results/ndarray as txt-file locally to ./results/? Use true/false. Default: false",
+        default="false",
+    )
+    optional_args.add_argument(
+        "-stat",
+        metavar="Statistics",
+        dest="want_statistics",
+        help="Boolean | Do you want to generate statistics (histogram & descriptive) for the results and save them locally to ./results/? Use true/false. Default: false",
         default="false",
     )
     # show help dialog if no arguments are given
@@ -90,20 +97,21 @@ def _check_input_arguments():
     want_plot = args.want_plot.lower()
     want_plot_saved = args.want_plot_saved.lower()
     want_txt_saved = args.want_txt_saved.lower()
+    want_statistics = args.want_statistics.lower()
 
     if clip_shape != "":
         while clip_shape[-4] != "." and clip_shape[-3] != ".":
-            clip_shape = input("Cannot read shapefile, please input a valid shapefile (like roi.shp): ")
+            clip_shape = input("ERROR: Cannot read shapefile, please input a valid shapefile (like roi.shp): ")
 
     while resolution not in ["", "10", "20", "60"]:
-        print("Your specified resolution cannot be used. Please provide a valid request (10, 20, 60).")
+        print("ERROR: Your specified resolution cannot be used. Please provide a valid request (10, 20, 60).")
         resolution = input("Enter the desired spatial resolution: ")
 
     if optional_val != "":
         optional_val = float(args.optional_val)
 
     if want_plot == "false" and want_plot_saved == "true":
-        print("Changed -gp to true. You need to generate a plot to be able to save it.")
+        print("ERROR: Changed -gp to true. You need to generate a plot to be able to save it.")
         want_plot = "true"
 
     return (
@@ -115,4 +123,5 @@ def _check_input_arguments():
         want_plot,
         want_plot_saved,
         want_txt_saved,
+        want_statistics,
     )

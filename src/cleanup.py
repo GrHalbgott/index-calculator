@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""PCleans the project folder (empties results and deletes temp data)"""
+"""Cleans the project folder (empties results and deletes temp data)"""
 
 
 import os

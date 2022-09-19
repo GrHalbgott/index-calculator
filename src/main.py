@@ -59,7 +59,7 @@ def main():
     # generate statistics (histogram & descriptives)
     writing.write_statistics(index_name, result, calc_resolution, want_statistics)
 
-    # delete any temporary files
+    # delete any temporary files, works only if the program finished entirely
     print("Cleaning up...")
     utils.cleanup_temp()
 

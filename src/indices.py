@@ -61,6 +61,18 @@ def gndvi_calc(resolution, raster_path, clip_shape):
     return gndvi, resolution
 
 
+def nbr_calc(resolution, raster_path, clip_shape):
+    """Calculation of the NBR"""
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):
+        b8a_path = item
+    for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B12*.jp2"):
+        b12_path = item
+    b8a = reading.read_raster(b8a_path, clip_shape)
+    b12 = reading.read_raster(b12_path, clip_shape)
+    nbr = (b8a - b12) / (b8a + b12)
+    return nbr, resolution
+
+
 def ndbi_calc(resolution, raster_path, clip_shape):
     """Calculation of the NDBI"""
     for item in glob.glob(raster_path + "*/GRANULE/*/IMG_DATA/R" + resolution + "m/*_B8A*.jp2"):

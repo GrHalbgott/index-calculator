@@ -19,7 +19,7 @@ Following indices are available so far (write an <a href="https://github.com/GrH
 
 ### Output options
 
-The following outputs can be automatically generated and aved to `./results/`:
+The following outputs can be automatically generated and saved to `./results/`:
 - Plot the resulting array with the default ranges (as found in literature)
 - Save the plot as figure
 - Save the resulting array as txt-file
@@ -78,22 +78,31 @@ If ready, call the program without any arguments to access the help within the t
 ```
 $ python src/main.py
 
-usage: main.py [-h] -i Index name [-c Clip] [-r Resolution] [-ov Optional value] [-tif Save raster] [-gp Generate plot] [-sp Save plot] [-txt Save as txt] [-stat Statistics]
+usage: main.py [-h] -i Index name [-c Clip] [-r Resolution] [-ov Optional value] [-tif Save raster] 
+[-gp Generate plot] [-sp Save plot] [-txt Save as txt] [-stat Statistics]
 
-Calculate an index with Sentinel-2 satellite imagery. You can use the following options to adapt the calculation to your needs. Have fun!
+Calculate an index with Sentinel-2 satellite imagery.
+You can use the following options to adapt the calculation to your needs. Have fun!
 
 required arguments:
-  -i Index name       String | Choose which index gets calculated. Check the README for a list of possible indices.
+  -i Index name       String | Choose which index gets calculated. 
+                      Check the README for a list of possible indices.
 
 optional arguments:
-  -c Clip             String | Clip raster to shapefile with shapefile. Use the name and file-type only (like roi.shp). Default value: None
-  -r Resolution       Integer | The indices can be calculated with different resolutions (10, 20, 60 (meters)). Default value: highest resolution possible
-  -ov Optional value  Integer | Some indices need additional values like the L-value in SAVI. Default value: as in literature
-  -tif Save raster    Boolean | Do you want to export the results/ndarray as tif-file locally to ./results/? Use true/false. Default: false
+  -c Clip             String | Clip raster to shapefile with shapefile. 
+                      Use the name and file-type only (like roi.shp). Default value: None
+  -r Resolution       Integer | The indices can be calculated with different resolutions (10, 20, 60 (meters)). 
+                      Default value: highest resolution possible
+  -ov Optional value  Integer | Some indices need additional values like the L-value in SAVI. 
+                      Default value: as in literature
+  -tif Save raster    Boolean | Do you want to export the results/ndarray as tif-file locally to ./results/? 
+                      Use true/false. Default: false
   -gp Generate plot   Boolean | Do you want to generate a plot? Use true/false. Default: true
   -sp Save plot       Boolean | Do you want to save the plot locally to ./results/? Use true/false. Default: false
-  -txt Save as txt    Boolean | Do you want to save the results/ndarray as txt-file locally to ./results/? Use true/false. Default: false
-  -stat Statistics    Boolean | Do you want to generate statistics (histogram & descriptive) for the results and save them locally to ./results/? Use true/false. Default: false
+  -txt Save as txt    Boolean | Do you want to save the results/ndarray as txt-file locally to ./results/? 
+                      Use true/false. Default: false
+  -stat Statistics    Boolean | Do you want to generate statistics (histogram & descriptive) for the results 
+                      and save them locally to ./results/? Use true/false. Default: false
 
 Exiting program, call again to run. Use -h or --help to show the help dialog.
 

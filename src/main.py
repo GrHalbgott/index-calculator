@@ -47,7 +47,7 @@ def main():
     # plot the result/ndarray
     utils.plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
 
-    print("\n\nAdditional outputs are generated...")
+    print("\nAdditional outputs are generated...")
     starttime2 = time.time()
 
     # write txt file with results/ndarray

@@ -3,7 +3,6 @@
 """Functions to write data (raster/txt/plots)"""
 
 
-import sys
 import glob
 import warnings
 import rasterio
@@ -48,7 +47,7 @@ def save_plot(want_plot_saved, index_name, calc_resolution):
             break
         print("ERROR: Please provide a valid input.")
     if want_plot_saved in ["y", "yes", "true"]:
-        print("...saving plot to file...")
+        print("   Plot saved to file.")
         plt.savefig("./results/{}_{}.png".format(index_name.lower(), calc_resolution), bbox_inches="tight")
     else:
         pass
@@ -98,7 +97,6 @@ def write_statistics(index_name, result, calc_resolution, want_statistics):
     if want_statistics in ["y", "yes", "true"]:
         warnings.filterwarnings(action="ignore", message="All-NaN slice encountered")
         # generate histogram and save it as file
-        print("...generating histogram...")
         plt.figure()
         plt.title(
             "Calculated {} for region of interest with spatial resolution of {} m".format(
@@ -107,19 +105,14 @@ def write_statistics(index_name, result, calc_resolution, want_statistics):
         )
         plt.xlabel("X-Axis")
         plt.ylabel("Y-Axis")
+        print("...generating histogram...")
         plt.hist(result)
-        plt.savefig("./results/{}_hist.png".format(index_name.lower()), bbox_inches="tight")
-
-        # generate descriptive statistics and save them as txt-file
-        print("...generating descriptive statistics...")
-        try:
-            fileout = open("./results/{}_statistics.txt".format(index_name), "w")
-        except Exception as err:
-            print("ERROR: Could not write file for statistics: {}.".format(err))
-            sys.exit()
-        fileout.write(
-            "--- STATISTICS OF CALCULATED {} ---\nMinimum: {:.2f}\nMaximum: {:.2f}\nMean: {:.2f}\nStd.dev: {:.2f}".format(
+        print("...deriving statistics...")
+        plt.figtext(
+            0.91,
+            0.7,
+            "Statistics of {} \n  Minimum: {:.2f}\n  Maximum: {:.2f}\n  Mean: {:.2f}\n  Std.dev: {:.2f}".format(
                 index_name.upper(), np.nanmin(result), np.nanmax(result), np.nanmean(result), np.nanstd(result)
-            )
+            ),
         )
-        fileout.close()
+        plt.savefig("./results/{}_hist.png".format(index_name.lower()), bbox_inches="tight")

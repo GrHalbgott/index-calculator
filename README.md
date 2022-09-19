@@ -1,6 +1,6 @@
 # index_calculator
 
-Calculate different indices of Sentinel-2 raster images and, if desired, cut them to a specific region of interest (roi, recommended for they are cut beforehand and can therefor minimize execution times!). <br/>
+Calculate different indices of Sentinel-2 raster images and, if desired, cut them to a specific region of interest (roi, recommended since they are clipped beforehand and can therefore minimize execution times!). <br/>
 Following indices are available so far (write an <a href="https://github.com/GrHalbgott/index-calculator/issues">issue</a> if you want some special index to be implemented):
 - Atmospherically Resistant Vegetation Index (ARVI)
 - Green Chlorophyll Vegetation Index (GCI)
@@ -15,10 +15,22 @@ Following indices are available so far (write an <a href="https://github.com/GrH
 - Soil-Adjusted Vegetation Index (SAVI)
 - Structure Intensive Pigment Vegetation Index (SIPI)
 
+### Output options
+
+The following outputs can be automatically generated and aved to `./results/`:
+- Plot the resulting array with the default ranges (as found in literature)
+- Save the plot as figure
+- Save the resulting array as txt-file
+- Export the resulting array as GIS-ready tif-file (raster)
+- Generate a histogram and include descriptive statistics (min, max, mean, std.dev)
+
+As before, if there is a type of output which you would want to get, please write an <a href="https://github.com/GrHalbgott/index-calculator/issues">issue</a>.
+
 ## Data
 
 Exemplary multispectral raster data can be found <a href="https://heibox.uni-heidelberg.de/d/5a5c773e48cf410a9ed6/">here</a> and should be put into `./data/raster/`.<br/>
-The region of interest must be manually added as a shapefile into `./data/shapes/`.
+The region of interest must be manually added as a shapefile into `./data/shapes/`. <br/>
+An example roi to test the program can be found in the HeiBOX folder mentioned above as well.
 
 <details>
    <summary><b>How to acquire raster (Sentinel-2) data</b></summary>
@@ -88,8 +100,9 @@ Exiting program, call again to run. Use -h or --help to show the help dialog.
 
 ## Cleaning up
 
-If finished with multiple analyses, you can empty ./results/  and delete temporary used files from ./data/. <br/>
-**Make sure to save any results you want to keep to another location!** <br/>
+If finished with multiple analyses, you can empty `./results/` and delete temporary used files from `./data/.` <br/>
+**Make sure to save any results you want to keep to another location BEFORE executing the following command!** <br/>
+
 To do a cleanup, call:
 ```
 $ python src/cleanup.py

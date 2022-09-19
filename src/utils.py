@@ -24,6 +24,8 @@ def index_calculator(index_name, resolution, raster_path, clip_shape, optional_v
         result, calc_resolution = indices.gndvi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "nbr":
         result, calc_resolution = indices.nbr_calc(calc_resolution, raster_path, clip_shape)
+    elif index_name == "nbr2":
+        result, calc_resolution = indices.nbr2_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndbi":
         result, calc_resolution = indices.ndbi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndmi":
@@ -58,7 +60,7 @@ def resolution_handler(index_name, resolution):
         elif resolution == "10" or resolution == "20":
             print("{} can only be calculated with a spatial resolution of 60 m.".format(index_name.upper()))
             calc_resolution = "60"
-    elif index_name in ["nbr", "ndbi", "ndmi", "ndre", "ndsi", "reip"]:
+    elif index_name in ["nbr", "nbr2", "ndbi", "ndmi", "ndre", "ndsi", "reip"]:
         if resolution == "":
             calc_resolution = "20"
         elif resolution == "10":
@@ -78,7 +80,7 @@ def plottype_handler(index_name, result):
     elif index_name in ["gci"]:
         plt.imshow(result, cmap="Greens")
         plt.clim(0, 1.1)  # range 0 to 2
-    elif index_name in ["nbr"]:
+    elif index_name in ["nbr", "nbr2"]:
         plt.imshow(result, cmap="RdYlGn")
         plt.clim(-1, 1)  # range -1 to 1
     elif index_name in ["ndbi", "ndwi"]:

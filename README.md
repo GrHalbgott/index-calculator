@@ -6,6 +6,7 @@ Following indices are available so far (write an <a href="https://github.com/GrH
 - Green Chlorophyll Vegetation Index (GCI)
 - Green Normalized Difference Vegetation Index (GNDVI)
 - Normalized Burn Ratio (NBR)
+- Normalized Burn Ratio 2 (NBR2)
 - Normalized Difference Build-up Index (NDBI)
 - Normalized Difference Moisture Index (NDMI)
 - Normalized Difference Red-Edge Vegetation Index (NDRE)

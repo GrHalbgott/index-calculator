@@ -30,7 +30,7 @@ def main():
 
     raster_path = "./data/raster/"
 
-    print("Calculating {}...".format(index_name))
+    print("Calculating {}...".format(index_name.upper()))
     result, calc_resolution = utils.index_calculator(
         index_name, resolution, raster_path, clip_shape, optional_val, want_raster_saved
     )
@@ -39,7 +39,7 @@ def main():
 
     # print out the information to user
     print(
-        "...finished calculating the {} with a spatial resolution of {} m. \n   Calculating took {:.2f} seconds.".format(
+        "...finished calculating the {} with a spatial resolution of {} m. \nCalculating took {:.2f} seconds.".format(
             index_name.upper(), calc_resolution, stoptime1 - starttime1
         )
     )
@@ -60,6 +60,7 @@ def main():
     writing.write_statistics(index_name, result, calc_resolution, want_statistics)
 
     # delete any temporary files
+    print("Cleaning up...")
     utils.cleanup_temp()
 
     stoptime2 = time.time()

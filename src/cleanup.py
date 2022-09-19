@@ -8,6 +8,8 @@ import os
 
 retain = ["raster", "shapes", "placeholder.md"]
 
+print("Cleaning up...")
+
 # deletes temp data
 for item in os.listdir("./data/"):
     if item not in retain:
@@ -17,3 +19,5 @@ for item in os.listdir("./data/"):
 for item in os.listdir("./results/"):
     if item not in retain:
         os.remove("./results/" + item)
+
+print("...finished.")

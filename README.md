@@ -51,7 +51,6 @@ An example roi to test the program can be found in the HeiBOX folder mentioned a
 11. In the Inspector, click on the download-arrow in the lower right corner to download the complete ZIP-file
 12. When downloaded, extract the ZIP-file and put the new folder in the `./data/raster/` folder
 </details>
-<br/>
 
 ## Getting Started
 

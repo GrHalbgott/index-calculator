@@ -74,7 +74,7 @@ def plottype_handler(index_name, result):
         plt.imshow(result, cmap="RdYlGn")
         plt.clim(-0.2, 0.8)  # range -1 to 1
     elif index_name in ["gci"]:
-        plt.imshow(result, cmap="Greens_r")
+        plt.imshow(result, cmap="Greens")
         plt.clim(0, 1.1)  # range 0 to 2
     elif index_name in ["ndbi", "ndwi"]:
         plt.imshow(result, cmap="BrBG")
@@ -90,7 +90,7 @@ def plottype_handler(index_name, result):
         plt.clim(0.2, 0.42)  # range -1 to 1
     elif index_name in ["reip"]:
         plt.imshow(result, cmap="Greens")
-        plt.clim(705, 740)  # range 705 to 740
+        plt.clim(700, 740)  # range 700 to 740
     elif index_name in ["sipi"]:
         plt.imshow(result, cmap="Greens")
         plt.clim(0.7, 1.8)  # range 0 to 2
@@ -122,7 +122,9 @@ def plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
         # check if user wants to save the plot
         writing.save_plot(want_plot_saved, index_name, calc_resolution)
         plt.tight_layout()
+        print("Awaiting user interaction to continue (close plot window)...")
         plt.show()
+        print("...thanks!")
     else:
         pass
 

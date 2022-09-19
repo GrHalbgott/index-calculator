@@ -47,7 +47,7 @@ def save_plot(want_plot_saved, index_name, calc_resolution):
             break
         print("ERROR: Please provide a valid input.")
     if want_plot_saved in ["y", "yes", "true"]:
-        print("   Plot saved to file.")
+        print("Plot saved to file.")
         plt.savefig("./results/{}_{}.png".format(index_name.lower(), calc_resolution), bbox_inches="tight")
     else:
         pass
@@ -106,7 +106,11 @@ def write_statistics(index_name, result, calc_resolution, want_statistics):
         plt.xlabel("X-Axis")
         plt.ylabel("Y-Axis")
         print("...generating histogram...")
-        plt.hist(result)
+        if index_name in ["gci", "reip", "savi", "sipi"]:
+            print("...cannot calculate yet. Check issues...")
+            return
+        else:
+            plt.hist(result, range=[-1, 1])
         print("...deriving statistics...")
         plt.figtext(
             0.91,
@@ -115,4 +119,5 @@ def write_statistics(index_name, result, calc_resolution, want_statistics):
                 index_name.upper(), np.nanmin(result), np.nanmax(result), np.nanmean(result), np.nanstd(result)
             ),
         )
+        print("...saving statistical results...")
         plt.savefig("./results/{}_hist.png".format(index_name.lower()), bbox_inches="tight")

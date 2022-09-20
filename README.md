@@ -20,19 +20,19 @@ Following indices are available so far (write an <a href="https://github.com/GrH
 ### Output options
 
 The following outputs can be automatically generated and saved to `./results/`:
-- Plot the resulting array with the default ranges (as found in literature)
+- Plot the resulting array with the most suitable ranges (as found in literature)
 - Save the plot as figure
 - Save the resulting array as txt-file
 - Export the resulting array as GIS-ready tif-file (raster)
 - Generate a histogram and include descriptive statistics (min, max, mean, std.dev)
 
-As before, if there is a type of output which you would want to get, please write an <a href="https://github.com/GrHalbgott/index-calculator/issues">issue</a>.
+As before, if there is any type of output which you would want to get as well, please write an <a href="https://github.com/GrHalbgott/index-calculator/issues">issue</a>. Look forward to it!
 
 ## Data
 
-Exemplary multispectral raster data can be found <a href="https://heibox.uni-heidelberg.de/d/5a5c773e48cf410a9ed6/">here</a> and should be put into `./data/raster/`.<br/>
+Exemplary multispectral raster data can be found <a href="https://heibox.uni-heidelberg.de/d/5a5c773e48cf410a9ed6/">here</a> and should be put into `./data/raster/` (unzip first without creating a new folder).<br/>
 The region of interest must be manually added as a shapefile into `./data/shapes/`. <br/>
-An example roi to test the program can be found in the HeiBOX folder mentioned above as well.
+An example roi to test the program can be found in the HeiBOX folder mentioned above as well (unzip first without creating a new folder as well).
 
 <details>
    <summary><b>How to acquire raster (Sentinel-2) data</b></summary>

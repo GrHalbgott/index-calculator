@@ -101,9 +101,13 @@ def resolution_handler(index_name, resolution):
         elif resolution == "10":
             print("{} cannot be calculated with a spatial resolution of 10 m.".format(index_name.upper()))
             calc_resolution = "20"
+        else:
+            calc_resolution = resolution
     elif index_name in ["arvi", "gci", "ndvi", "ndwi", "savi", "sipi"]:
         if resolution == "":
             calc_resolution = "10"
+        else:
+            calc_resolution = resolution
     return calc_resolution
 
 

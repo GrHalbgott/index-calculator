@@ -18,6 +18,8 @@ def write_clip(out_raster, out_image, out_transform, out_meta):
             "height": out_image.shape[1],
             "width": out_image.shape[2],
             "transform": out_transform,
+            "dtype": "float64",
+            "nodata": np.nan,
         }
     )
     # open a new raster file and write the information into it

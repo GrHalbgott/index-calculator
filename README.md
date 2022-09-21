@@ -116,7 +116,8 @@ Calculate an index with Sentinel-2 satellite imagery.
 You can use the following options to adapt the calculation to your needs. Have fun!
 
 required arguments:
-  -i Index name       String | Choose which index gets calculated. Check the README for a list of possible indices.
+  -i Index name       String | Choose which index gets calculated.
+                      Check the README for a list of possible indices.
 
 optional arguments:
   -c Clip             String | Clip raster to shapefile with shapefile. Use the name and file-type only

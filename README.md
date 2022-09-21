@@ -34,6 +34,7 @@ The following outputs can be automatically generated and saved to `./results/`:
 
 As before, if there is any type of output which you would want to get as well, please write an <a href="https://github.com/GrHalbgott/index-calculator/issues">issue</a>.
 
+
 ## Data
 
 Required data to calculate indices are multispectral raster images with specific bands needed for specific indices. So far both the **Sentinel 2** and **Landsat 8** satellite platforms with their respective multispectral sensoring systems are implemented and can be used as input datasets. <br/>
@@ -67,7 +68,7 @@ The datasets can be acquired through different ways, the following two are only 
 
 1. Navigate to <a href="https://ers.cr.usgs.gov/register">USGS EROS registration system</a> and set up an account (skip if already registered)
 2. Log in on <a href="https://ers.cr.usgs.gov/login">USGS login form</a>. Without logging in you cannot download the required data
-3. Go to <a hred="https://earthexplorer.usgs.gov">USGS Earth Explorer</a>
+3. Go to <a href="https://earthexplorer.usgs.gov">USGS Earth Explorer</a>
 4. Specify the search area in the map by zooming in to the area of interest
 5. Click on the "Use Map" button on the left side. This bounds the area of interest in a rectangle which can be used as search criteria
 6. Click on "Data Sets" on top of the left box and select Landsat -> Landsat Collection 2 (Level 1 or 2) -> Landsat 8/9 OLI/TIRS...
@@ -137,7 +138,6 @@ optional arguments:
                       the results and save them locally to ./results/? Use true/false. Default: false
 
 Exiting program, call again to run. Use -h or --help to show the help dialog.
-
 ```
 
 ## Cleaning up

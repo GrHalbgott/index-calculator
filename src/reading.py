@@ -12,20 +12,20 @@ import rasterio.mask
 
 def read_raster(in_raster, clip_shape):
     """
-    Read the input files as Numpy arrays and preprocess them
+    Read the input files (Sentinel 2) as Numpy arrays and preprocess them
     param in_dem: path to input file (string)
     output: returns a Numpy array (Null values are np.nan)
     """
     # test if a clip is found as argument, if so change the filepath to clipped file
     if clip_shape != "":
-        print("...clipping raster ./data/.../{}...".format(in_raster[-34:]))
+        print("...clipping raster ./data/.../*{}...".format(in_raster[-27:]))
         in_shape = "./data/shapes/" + clip_shape
         raster = clip(in_raster, in_shape)
         print("...reading raster ./data/{}...".format(raster[7:]))
     else:
         # otherwise just take the original path to the rasterfile
         raster = in_raster
-        print("...reading raster ./data/../{}...".format(raster[-34:]))
+        print("...reading raster ./data/.../*{}...".format(raster[-27:]))
     try:
         # open the rasterfile in reading mode
         dataset = rasterio.open(raster, "r")
@@ -45,7 +45,7 @@ def read_raster(in_raster, clip_shape):
 def clip(in_raster, in_shape):
     """Clip raster file with shape file and generate new raster output file as TIF"""
     # Since the in_raster variable is a long filepath, we want to cut it to only the filename
-    out_raster = "./data" + in_raster[-35:-4] + "_clipped.tif"
+    out_raster = "./data/" + in_raster[-27:-4] + "_clipped.tif"
     try:
         # open the shapefile in reading mode
         with fiona.open(in_shape, "r") as shapefile:

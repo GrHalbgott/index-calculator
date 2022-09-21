@@ -31,17 +31,24 @@ def _check_input_arguments():
         default="",
     )
     optional_args.add_argument(
+        "-sat",
+        metavar="Satellite",
+        dest="satellite",
+        help="String | You can use different satellite datasets (s2/sentinel2 or l8/landsat8). Default value: s2",
+        default="s2",
+    )
+    optional_args.add_argument(
         "-r",
         metavar="Resolution",
         dest="resolution",
-        help="Integer | The indices can be calculated with different resolutions (10, 20, 60 (meters)). Default value: highest resolution possible",
+        help="Integer | When using Sentinel 2 datasets, the indices can be calculated with different resolutions (10, 20, 60 m). Default value: highest resolution possible",
         default="",
     )
     optional_args.add_argument(
         "-ov",
         metavar="Optional value",
         dest="optional_val",
-        help="Integer | Some indices need additional values like the L-value in SAVI. Default value: as in literature",
+        help="Float | Some indices need additional values like the L-value in SAVI. Default value: as in literature",
         default="",
     )
     optional_args.add_argument(
@@ -91,6 +98,7 @@ def _check_input_arguments():
     # Assign arguments to variables and do some checks for error-handling
     index_name = args.index_name.lower()
     clip_shape = args.clip_shape
+    satellite = args.satellite.lower()
     resolution = args.resolution
     optional_val = args.optional_val
     want_raster_saved = args.want_raster_saved.lower()
@@ -104,8 +112,13 @@ def _check_input_arguments():
             clip_shape = input("ERROR: Cannot read shapefile, please input a valid shapefile (like roi.shp): ")
 
     while resolution not in ["", "10", "20", "60"]:
-        print("ERROR: Your specified resolution cannot be used. Please provide a valid request (10, 20, 60).")
+        print(
+            "ERROR: Your specified resolution cannot be used. Please provide a valid request (10, 20, 60; Sentinel 2 only)."
+        )
         resolution = input("Enter the desired spatial resolution: ")
+
+    if satellite in ["l8", "landsat8", "landsat"]:
+        resolution = 30
 
     if optional_val != "":
         optional_val = float(args.optional_val)
@@ -117,6 +130,7 @@ def _check_input_arguments():
     return (
         index_name,
         clip_shape,
+        satellite,
         resolution,
         optional_val,
         want_raster_saved,

@@ -3,7 +3,8 @@
 """Utilities (choose: index function, resolution, plot range; function to plot)"""
 
 
-import indices
+import indices_s2
+import indices_l8
 import writing
 import os
 import sys
@@ -11,45 +12,79 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def index_calculator(index_name, resolution, raster_path, clip_shape, optional_val, want_raster_saved):
-    """Calculates the desired index and returns a ndarray"""
+def index_calculator_s2(index_name, resolution, raster_path, clip_shape, optional_val):
+    """Calculates the desired index for Sentintel 2 data and returns a ndarray"""
     calc_resolution = resolution_handler(index_name, resolution)
     # ignore error messages during calculation
     np.seterr(divide="ignore", invalid="ignore")
     if index_name == "arvi":
-        result, calc_resolution = indices.arvi_calc(calc_resolution, raster_path, clip_shape, optional_val)
+        result, calc_resolution = indices_s2.arvi_calc(calc_resolution, raster_path, clip_shape, optional_val)
     elif index_name == "gci":
-        result, calc_resolution = indices.gci_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.gci_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "gndvi":
-        result, calc_resolution = indices.gndvi_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.gndvi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "nbr":
-        result, calc_resolution = indices.nbr_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.nbr_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "nbr2":
-        result, calc_resolution = indices.nbr2_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.nbr2_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndbi":
-        result, calc_resolution = indices.ndbi_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.ndbi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndmi":
-        result, calc_resolution = indices.ndmi_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.ndmi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndre":
-        result, calc_resolution = indices.ndre_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.ndre_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndsi":
-        result, calc_resolution = indices.ndsi_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.ndsi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndvi":
-        result, calc_resolution = indices.ndvi_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.ndvi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "ndwi":
-        result, calc_resolution = indices.ndwi_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.ndwi_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "reip":
-        result, calc_resolution = indices.reip_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.reip_calc(calc_resolution, raster_path, clip_shape)
     elif index_name == "savi":
-        result, calc_resolution = indices.savi_calc(calc_resolution, raster_path, clip_shape, optional_val)
+        result, calc_resolution = indices_s2.savi_calc(calc_resolution, raster_path, clip_shape, optional_val)
     elif index_name == "sipi":
-        result, calc_resolution = indices.sipi_calc(calc_resolution, raster_path, clip_shape)
+        result, calc_resolution = indices_s2.sipi_calc(calc_resolution, raster_path, clip_shape)
     else:
         print(
             "ERROR: Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
         )
         sys.exit()
     return result, calc_resolution
+
+
+def index_calculator_l8(index_name, raster_path, clip_shape, optional_val):
+    """Calculates the desired index for Landsat 8 data and returns a ndarray"""
+    # ignore error messages during calculation
+    np.seterr(divide="ignore", invalid="ignore")
+    if index_name == "arvi":
+        result = indices_l8.arvi_calc(raster_path, clip_shape, optional_val)
+    elif index_name == "gci":
+        result = indices_l8.gci_calc(raster_path, clip_shape)
+    elif index_name == "nbr":
+        result = indices_l8.nbr_calc(raster_path, clip_shape)
+    elif index_name == "nbr2":
+        result = indices_l8.nbr2_calc(raster_path, clip_shape)
+    elif index_name == "ndbi":
+        result = indices_l8.ndbi_calc(raster_path, clip_shape)
+    elif index_name == "ndmi":
+        result = indices_l8.ndmi_calc(raster_path, clip_shape)
+    elif index_name == "ndsi":
+        result = indices_l8.ndsi_calc(raster_path, clip_shape)
+    elif index_name == "ndvi":
+        result = indices_l8.ndvi_calc(raster_path, clip_shape)
+    elif index_name == "ndwi":
+        result = indices_l8.ndwi_calc(raster_path, clip_shape)
+    elif index_name == "savi":
+        result = indices_l8.savi_calc(raster_path, clip_shape, optional_val)
+    elif index_name == "sipi":
+        result = indices_l8.sipi_calc(raster_path, clip_shape)
+    else:
+        print(
+            "ERROR: Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
+        )
+        sys.exit()
+    return result
 
 
 def resolution_handler(index_name, resolution):

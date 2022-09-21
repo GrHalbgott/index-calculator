@@ -17,6 +17,7 @@ def main():
     (
         index_name,
         clip_shape,
+        satellite,
         resolution,
         optional_val,
         want_raster_saved,
@@ -31,9 +32,17 @@ def main():
     raster_path = "./data/raster/"
 
     print("Calculating {}...".format(index_name.upper()))
-    result, calc_resolution = utils.index_calculator(
-        index_name, resolution, raster_path, clip_shape, optional_val, want_raster_saved
-    )
+    if satellite in ["s2", "sentinel2", "sentinel"]:
+        result, calc_resolution = utils.index_calculator_s2(
+            index_name, resolution, raster_path, clip_shape, optional_val
+        )
+    elif satellite in ["l8", "landsat8", "landsat"]:
+        result = utils.index_calculator_l8(index_name, raster_path, clip_shape, optional_val)
+        calc_resolution = 30
+    else:
+        print(
+            "ERROR: Your specified satellite dataset cannot be used yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible datasets."
+        )
 
     stoptime1 = time.time()
 
@@ -47,25 +56,30 @@ def main():
     # plot the result/ndarray
     utils.plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
 
-    print("\nAdditional outputs are generated...")
     starttime2 = time.time()
 
-    # write txt file with results/ndarray
-    writing.write_txt(index_name, result, want_txt_saved)
+    if any([want_txt_saved == "true", want_raster_saved == "true", want_statistics == "true"]):
+        print("\nAdditional outputs are generated...")
 
-    # export as raster tif-file
-    writing.write_raster(index_name, calc_resolution, raster_path, clip_shape, want_raster_saved, result)
+        # write txt file with results/ndarray
+        writing.write_txt(index_name, result, want_txt_saved)
 
-    # generate statistics (histogram & descriptives)
-    writing.write_statistics(index_name, result, calc_resolution, want_statistics)
+        # export as raster tif-file
+        writing.write_raster(index_name, calc_resolution, raster_path, clip_shape, want_raster_saved, result)
+
+        # generate statistics (histogram & descriptives)
+        writing.write_statistics(index_name, result, calc_resolution, want_statistics)
+
+        print("...cleaning up...")
+    else:
+        print("\nCleaning up...")
 
     # delete any temporary files, works only if the program finished entirely
-    print("Cleaning up...")
     utils.cleanup_temp()
 
     stoptime2 = time.time()
 
-    print("...finished. \n   This took another {:.2f} seconds.".format(stoptime2 - starttime2))
+    print("...finished. \nThis took another {:.2f} seconds.".format(stoptime2 - starttime2))
 
 
 if __name__ == "__main__":

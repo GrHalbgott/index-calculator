@@ -27,28 +27,28 @@ def _check_input_arguments():
         "-c",
         metavar="Clip",
         dest="clip_shape",
-        help="String | Clip raster to shapefile with shapefile. Use the name and file-type only (like roi.shp). Default value: None",
+        help="String | Clip raster to shapefile with shapefile. Use the name and file-type only (like aoi.shp). Default value: None",
         default="",
     )
     optional_args.add_argument(
         "-sat",
         metavar="Satellite",
         dest="satellite",
-        help="String | You can use different satellite datasets (s2/sentinel2 or l8/landsat8). Default value: s2",
+        help="String | You can use different satellite datasets (sentinel2/s2 or landsat8/l8). Default value: s2",
         default="s2",
     )
     optional_args.add_argument(
         "-r",
         metavar="Resolution",
         dest="resolution",
-        help="Integer | When using Sentinel 2 datasets, the indices can be calculated with different resolutions (10, 20, 60 m). Default value: highest resolution possible",
+        help="Integer | When using Sentinel-2 datasets, the indices can be calculated with different resolutions (10, 20, 60 (m)). Default value: highest resolution possible",
         default="",
     )
     optional_args.add_argument(
         "-ov",
         metavar="Optional value",
         dest="optional_val",
-        help="Float | Some indices need additional values like the L-value in SAVI. Default value: as in literature",
+        help="Float | Some indices need additional values like the L-value in SAVI (0.5). Default value: as in literature",
         default="",
     )
     optional_args.add_argument(
@@ -89,7 +89,7 @@ def _check_input_arguments():
     # show help dialog if no arguments are given
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
-        print(" \nExiting program, call again to run. Use -h or --help to show the help dialog.")
+        print(" \nExiting program, call again with arguments to run.")
         sys.exit(1)
     else:
         # initialize arguments of parser
@@ -109,11 +109,11 @@ def _check_input_arguments():
 
     if clip_shape != "":
         while clip_shape[-4] != "." and clip_shape[-3] != ".":
-            clip_shape = input("ERROR: Cannot read shapefile, please input a valid shapefile (like roi.shp): ")
+            clip_shape = input("ERROR: Cannot read shapefile, please input a valid shapefile (like aoi.shp): ")
 
     while resolution not in ["", "10", "20", "60"]:
         print(
-            "ERROR: Your specified resolution cannot be used. Please provide a valid request (10, 20, 60; Sentinel 2 only)."
+            "ERROR: Your specified resolution cannot be used. Please provide a valid request (10, 20, 60; Sentinel-2 only)."
         )
         resolution = input("Enter the desired spatial resolution: ")
 

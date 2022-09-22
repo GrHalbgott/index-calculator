@@ -1,6 +1,6 @@
-# index_calculator
+# Index Calculator
 
-Calculate different indices of Sentinel-2 and Landsat 8 raster images and, if desired, cut them to a specific region of interest (roi, recommended since they are clipped beforehand and can therefore minimize execution times!).
+Calculate different indices of Sentinel-2 and Landsat 8 raster images and, if desired, cut them to a specific area of interest (AOI, recommended since they are clipped beforehand and can therefore strongly decrease execution times!).
 
 Following indices are available so far:
 
@@ -21,7 +21,7 @@ Following indices are available so far:
 | Soil-Adjusted Vegetation Index (SAVI) | x | x |
 | Structure Intensive Pigment Vegetation Index (SIPI) | x | x |
 
-If you want any indices to be implemented, please don't hesitate to write an <a href="https://github.com/GrHalbgott/index-calculator/issues">issue</a>.
+If you want any indices to be implemented as well, please don't hesitate to write an <a href="https://github.com/GrHalbgott/index-calculator/issues">issue</a>.
 
 ### Output options
 
@@ -38,7 +38,7 @@ As before, if there is any type of output which you would want to get as well, p
 ## Data
 
 Required data to calculate indices are multispectral raster images with specific bands needed for specific indices. So far both the **Sentinel-2** and **Landsat 8** satellite platforms with their respective multispectral sensoring systems are implemented and can be used as input datasets. <br/>
-**Note:** indices for Landsat 8 datasets can only be calculated with a spatial resolution of 30 meters, Sentinel-2 offers the possibility to calculate with a spatial resolution of  10, 20 and 60 meters.
+**Note:** indices for Landsat 8 datasets can only be calculated with a spatial resolution of 30 meters, Sentinel-2 offers the possibility to calculate with a spatial resolution of 10, 20 and 60 meters.
 
 The datasets can be acquired through different ways, the following two are only exemplarily shown:
 
@@ -80,8 +80,10 @@ The datasets can be acquired through different ways, the following two are only 
 12. When downloaded, extract the ZIP-file and put the new folder in the `./data/raster/` folder (`./data/raster/L*`)
 </details>
 
-Exemplary multispectral raster data for both satellites (S* is Sentinel-2, L* is Landsat 8) can be found <a href="https://heibox.uni-heidelberg.de/d/5a5c773e48cf410a9ed6/">here</a> and should be put into `./data/raster/` (unzip so as the name of the file is the first folder).<br/>
-The roi must be manually added as a shapefile into `./data/shapes/`. An example roi to test the program can be found in the HeiBOX folder mentioned above as well (unzip first without creating a new folder as well).
+Exemplary multispectral raster data for both satellites (S* is Sentinel-2, L* is Landsat 8) can be found <a href="https://heibox.uni-heidelberg.de/d/5a5c773e48cf410a9ed6/">here</a> and should be put into `./data/raster/` (unzip so as the name of the file is the first folder like `./data/raster/L*/tif-files`). <br/>
+
+If you want to clip the raster data, you will need a shapefile with your AOI. It has to be manually put into `./data/shapes/`. <br/>
+An example AOI to test the program can be found in the HeiBOX folder mentioned above as well (unzip without creating a new folder like `./data/shapes/aoi.shp`).
 
 
 ## Getting Started
@@ -120,7 +122,7 @@ required arguments:
 
 optional arguments:
   -c Clip             String | Clip raster to shapefile with shapefile. Use the name and file-type only
-                      (like roi.shp). Default value: None
+                      (like aoi.shp). Default value: None
   -sat Satellite      String | You can use different satellite datasets (sentinel2/s2 or landsat8/l8).
                       Default value: s2
   -r Resolution       Integer | When using Sentinel-2 datasets, the indices can be calculated with
@@ -137,7 +139,7 @@ optional arguments:
   -stat Statistics    Boolean | Do you want to generate statistics (histogram & descriptive) for
                       the results and save them locally to ./results/? Use true/false. Default: false
 
-Exiting program, call again to run. Use -h or --help to show the help dialog.
+Exiting program, call again with arguments to run.
 ```
 
 

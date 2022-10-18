@@ -10,7 +10,7 @@ import argparse
 def _check_input_arguments():
     """Some error-handling and interaction for the optional input values: clip raster to shapefile, index name, resolution, optional value (e.g. L in SAVI) and whether user wants to save the plot locally"""
     # Initialize argparse and specify the optional arguments
-    help_msg = "Calculate an index with Sentinel-2 satellite imagery. You can use the following options to adapt the calculation to your needs. Have fun!"
+    help_msg = "Calculate indices with Sentinel-2 or Landsat 8 satellite imagery. You can use the following options to adapt the calculation to your needs. Have fun!"
     parser = argparse.ArgumentParser(description=help_msg, prefix_chars="-")
     parser._action_groups.pop()
     # use two groups of inputs (required and optional)
@@ -121,7 +121,7 @@ def _check_input_arguments():
         resolution = 30
 
     if optional_val != "":
-        optional_val = float(args.optional_val)
+        optional_val = abs(float(args.optional_val))
 
     if want_plot == "false" and want_plot_saved == "true":
         print("ERROR: Changed -gp to true. You need to generate a plot to be able to save it.")

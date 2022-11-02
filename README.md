@@ -2,6 +2,8 @@
 
 Calculate different indices of Sentinel-2 and Landsat 8 raster images and, if desired, cut them to a specific area of interest (AOI, recommended since they are clipped beforehand and can therefore strongly decrease execution times!).
 
+![Test picture](./results/ndmi_test.png)
+
 Following indices are available so far:
 
 | Index | Sentinel-2 | Landsat 8 |

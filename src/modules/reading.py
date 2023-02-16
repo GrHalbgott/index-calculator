@@ -3,7 +3,7 @@
 """Functions to read data (raster/vector)"""
 
 
-import writing
+import modules.writing as writing
 import sys
 import fiona
 import rasterio

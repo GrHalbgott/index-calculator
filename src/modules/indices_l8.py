@@ -3,7 +3,7 @@
 """Functions to calculate the indices for Landsat 8/9 images"""
 
 
-import reading
+import modules.reading as reading
 import glob
 
 

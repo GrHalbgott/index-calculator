@@ -6,7 +6,7 @@
 import os
 
 
-retain = ["raster", "shapes", "placeholder.md"]
+retain = ["raster", "shapes", "placeholder.md", "ndmi_test.png"]
 
 print("Cleaning up...")
 

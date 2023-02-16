@@ -3,7 +3,7 @@
 """Functions to calculate the indices for Sentinel 2 images"""
 
 
-import reading
+import modules.reading as reading
 import glob
 
 

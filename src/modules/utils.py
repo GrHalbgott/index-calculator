@@ -3,9 +3,9 @@
 """Utilities (choose: index function, resolution, plot range; function to plot)"""
 
 
-import indices_s2
-import indices_l8
-import writing
+import modules.indices_s2 as indices_s2
+import modules.indices_l8 as indices_l8
+import modules.writing as writing
 import os
 import sys
 import matplotlib.pyplot as plt
@@ -19,7 +19,9 @@ def index_calculator_s2(index_name, resolution, raster_path, clip_shape, optiona
         # ignore error messages during calculation
         np.seterr(divide="ignore", invalid="ignore")
         if index_name == "arvi":
-            result, calc_resolution = indices_s2.arvi_calc(calc_resolution, raster_path, clip_shape, optional_val)
+            result, calc_resolution = indices_s2.arvi_calc(
+                calc_resolution, raster_path, clip_shape, optional_val
+            )
         elif index_name == "gci":
             result, calc_resolution = indices_s2.gci_calc(calc_resolution, raster_path, clip_shape)
         elif index_name == "gndvi":
@@ -43,14 +45,16 @@ def index_calculator_s2(index_name, resolution, raster_path, clip_shape, optiona
         elif index_name == "reip":
             result, calc_resolution = indices_s2.reip_calc(calc_resolution, raster_path, clip_shape)
         elif index_name == "savi":
-            result, calc_resolution = indices_s2.savi_calc(calc_resolution, raster_path, clip_shape, optional_val)
+            result, calc_resolution = indices_s2.savi_calc(
+                calc_resolution, raster_path, clip_shape, optional_val
+            )
         elif index_name == "sipi":
             result, calc_resolution = indices_s2.sipi_calc(calc_resolution, raster_path, clip_shape)
     except Exception:
         print(
             "ERROR: Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
         )
-        sys.exit()
+        sys.exit(0)
     return result, calc_resolution
 
 
@@ -85,7 +89,7 @@ def index_calculator_l8(index_name, raster_path, clip_shape, optional_val):
         print(
             "ERROR: Your specified index cannot be calculated yet or doesn't exist.\n Please provide a valid request, check the README for a list of possible indices."
         )
-        sys.exit()
+        sys.exit(0)
     return result
 
 

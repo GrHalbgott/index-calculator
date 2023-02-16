@@ -3,17 +3,13 @@
 """Program to calculate different indices"""
 
 
-import chk_args
-import utils
-import writing
+from modules.chk_args import _check_input_arguments
+from modules.utils import index_calculator_l8, index_calculator_s2, plot_result, cleanup_temp
+from modules.writing import write_txt, write_raster, write_statistics
 import time
 
 
-def main():
-    """
-    Reads raster files as NumPy-arrays and calculate the desired index
-    :return: raster image
-    """
+if __name__ == "__main__":
     (
         index_name,
         clip_shape,
@@ -25,7 +21,7 @@ def main():
         want_plot_saved,
         want_txt_saved,
         want_statistics,
-    ) = chk_args._check_input_arguments()
+    ) = _check_input_arguments()
 
     starttime1 = time.time()
 
@@ -33,11 +29,11 @@ def main():
 
     print("Calculating {}...".format(index_name.upper()))
     if satellite in ["s2", "sentinel2", "sentinel"]:
-        result, calc_resolution = utils.index_calculator_s2(
+        result, calc_resolution = index_calculator_s2(
             index_name, resolution, raster_path, clip_shape, optional_val
         )
     elif satellite in ["l8", "landsat8", "landsat"]:
-        result = utils.index_calculator_l8(index_name, raster_path, clip_shape, optional_val)
+        result = index_calculator_l8(index_name, raster_path, clip_shape, optional_val)
         calc_resolution = 30
     else:
         print(
@@ -48,13 +44,11 @@ def main():
 
     # print out the information to user
     print(
-        "...finished calculating the {} with a spatial resolution of {} m. \nCalculating took {:.2f} seconds.".format(
-            index_name.upper(), calc_resolution, stoptime1 - starttime1
-        )
+        f"...finished calculating the {index_name.upper()} with a spatial resolution of {calc_resolution} m. \nCalculating took {stoptime1 - starttime1:.2f} seconds."
     )
 
     # plot the result/ndarray
-    utils.plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
+    plot_result(index_name, result, calc_resolution, want_plot, want_plot_saved)
 
     starttime2 = time.time()
 
@@ -62,25 +56,21 @@ def main():
         print("\nAdditional outputs are generated...")
 
         # write txt file with results/ndarray
-        writing.write_txt(index_name, result, want_txt_saved)
+        write_txt(index_name, result, want_txt_saved)
 
         # export as raster tif-file
-        writing.write_raster(index_name, calc_resolution, raster_path, clip_shape, want_raster_saved, result)
+        write_raster(index_name, calc_resolution, raster_path, clip_shape, want_raster_saved, result)
 
         # generate statistics (histogram & descriptives)
-        writing.write_statistics(index_name, result, calc_resolution, want_statistics)
+        write_statistics(index_name, result, calc_resolution, want_statistics)
 
         print("...cleaning up...")
     else:
         print("\nCleaning up...")
 
     # delete any temporary files, works only if the program finished entirely
-    utils.cleanup_temp()
+    cleanup_temp()
 
     stoptime2 = time.time()
 
-    print("...finished. \nThis took another {:.2f} seconds.".format(stoptime2 - starttime2))
-
-
-if __name__ == "__main__":
-    main()
+    print(f"...finished. \nThis took another {stoptime2 - starttime2:.2f} seconds.")

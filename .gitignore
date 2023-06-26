@@ -1,5 +1,7 @@
 # Custom files
-data/
+L*
+S2*
+aoi*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

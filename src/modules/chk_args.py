@@ -12,7 +12,6 @@ def _check_input_arguments():
     # Initialize argparse and specify the optional arguments
     help_msg = "Calculate indices with Sentinel-2 or Landsat 8 satellite imagery. You can use the following options to adapt the calculation to your needs. Have fun!"
     parser = argparse.ArgumentParser(description=help_msg, prefix_chars="-")
-    parser._action_groups.pop()
     # use two groups of inputs (required and optional)
     required_args = parser.add_argument_group("required arguments")
     optional_args = parser.add_argument_group("optional arguments")
